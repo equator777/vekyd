@@ -1,0 +1,39 @@
+{
+  "name": "vekyd",
+  "private": true,
+  "version": "1.0.0",
+  "homepage": "https://equator777.github.io/vekyd",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/equator777/vekyd.git"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "oxlint",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@tailwindcss/vite": "^4.3.3",
+    "canvas-confetti": "^1.9.4",
+    "enhanced-resolve": "^5.24.5",
+    "lucide-react": "^1.31.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.4",
+    "autoprefixer": "^10.5.4",
+    "gh-pages": "^6.3.0",
+    "oxlint": "^1.75.0",
+    "postcss": "^8.5.26",
+    "tailwindcss": "^3.4.19",
+    "vite": "^8.2.0"
+  }
+}

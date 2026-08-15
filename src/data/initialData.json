@@ -1,0 +1,24 @@
+{
+  "TRADE_CATEGORIES": [
+    { "id": "all", "name": "All Trades", "icon": "Wrench", "count": "120+" },
+    { "id": "craftsman", "name": "Craftsman", "icon": "Hammer", "count": "24" },
+    { "id": "welder", "name": "Welder", "icon": "Flame", "count": "18" },
+    { "id": "electrician", "name": "Electrician", "icon": "Zap", "count": "32" },
+    { "id": "plumber", "name": "Plumber", "icon": "Droplets", "count": "29" },
+    { "id": "mason", "name": "Mason", "icon": "Boxes", "count": "15" },
+    { "id": "carpenter", "name": "Carpenter", "icon": "Ruler", "count": "22" },
+    { "id": "painter", "name": "Painter", "icon": "Paintbrush", "count": "20" },
+    { "id": "hvac", "name": "HVAC Tech", "icon": "Wind", "count": "16" },
+    { "id": "landscaper", "name": "Landscaper", "icon": "Trees", "count": "19" }
+  ],
+  "GOODS_CATEGORIES": [
+    { "id": "all", "name": "All Products", "icon": "Grid" },
+    { "id": "groceries", "name": "Groceries & Pantry", "icon": "Apple" },
+    { "id": "tools", "name": "Power & Hand Tools", "icon": "Wrench" },
+    { "id": "electronics", "name": "Electronics & Tech", "icon": "Laptop" },
+    { "id": "furniture", "name": "Furniture & Decor", "icon": "Armchair" },
+    { "id": "vehicles", "name": "Bikes & Vehicles", "icon": "Bike" },
+    { "id": "collectibles", "name": "Vintage & Collectibles", "icon": "Sparkles" },
+    { "id": "garden", "name": "Home & Outdoor", "icon": "Home" }
+  ]
+}
