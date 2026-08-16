@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-16T12:45:52.659Z",
+  "updatedAt": "2026-08-16T12:50:11.539Z",
   "users": [
     {
       "id": "u-admin",
@@ -14,8 +14,8 @@
   ],
   "goods": [
     {
-      "id": "g-1786883515123",
-      "title": "Dr. Daga's Master V3+ Ortho Massage Bed",
+      "id": "g-1786884588287",
+      "title": "Dr. Daga's Master V3+",
       "price": 9500,
       "originalPrice": 11400,
       "category": "electronics",
@@ -26,9 +26,9 @@
       "sellerType": "business",
       "sellerContact": "8485883994",
       "location": "United States",
-      "description": "Dr. Daga's Master V3+ Orthopedic Massage Bed with different settings for neck and spine massage, used especially for patients with back and neck pain and  hip pain.  Very useful for elderly peoples, sports person",
-      "createdAt": "2026-08-16T12:31:55.123Z",
-      "expiresAt": 1789475515123
+      "description": "Dr. Daga's Master V3+ Orthopedic Massage Bed for elderly, sport person, or people who are suffering from constant severe back and neck pain and hip pain.  This bed massages are the pressure points and relieves your pain.  very useful product.  This is a used product so the price is almost 70% less.",
+      "createdAt": "2026-08-16T12:49:48.287Z",
+      "expiresAt": 1789476588287
     },
     {
       "id": "g-4",
