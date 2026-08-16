@@ -29,7 +29,7 @@ export default function TradeDirectory({
   openRegisterTradeModal,
   searchQuery
 }) {
-  const [maxRate, setMaxRate] = useState(150);
+  const [maxRate, setMaxRate] = useState(100000);
   const [minRating, setMinRating] = useState(4.0);
 
   // Filter logic for tradesmen
@@ -130,14 +130,14 @@ export default function TradeDirectory({
               <label className="text-xs text-gray-400 font-medium">Max Rate:</label>
               <input
                 type="range"
-                min="40"
-                max="150"
-                step="5"
+                min="100"
+                max="100000"
+                step="500"
                 value={maxRate}
                 onChange={(e) => setMaxRate(Number(e.target.value))}
-                className="w-24 accent-cyan-400 cursor-pointer h-1.5"
+                className="w-28 sm:w-36 accent-cyan-400 cursor-pointer h-1.5"
               />
-              <span className="text-xs font-bold text-cyan-300">₹{maxRate}/hr</span>
+              <span className="text-xs font-bold text-cyan-300">₹{maxRate.toLocaleString('en-IN')}/hr</span>
             </div>
           </div>
 
