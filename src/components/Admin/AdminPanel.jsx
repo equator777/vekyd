@@ -14,10 +14,17 @@ import {
   Sparkles,
   BarChart3,
   Globe,
+  Globe2,
+  MapPin,
+  Clock,
+  Smartphone,
+  Laptop,
+  Activity,
   Upload,
   Download,
   AlertCircle,
   TrendingUp,
+  Tag,
   Key
 } from 'lucide-react';
 import { commitDataToGitHub } from '../../utils/githubSync';
@@ -36,9 +43,10 @@ export default function AdminPanel({
   onRenewGoodsExpiry,
   ads,
   onAddAd,
-  onDeleteAd
+  onDeleteAd,
+  visitorLogs = []
 }) {
-  const [activeTab, setActiveTab] = useState('users'); // 'users' | 'listings' | 'ads' | 'github'
+  const [activeTab, setActiveTab] = useState('users'); // 'users' | 'listings' | 'ads' | 'analytics' | 'github'
   const [userSearch, setUserSearch] = useState('');
   
   // GitHub Settings State (persisted in localStorage)
@@ -309,6 +317,18 @@ export default function AdminPanel({
           >
             <BarChart3 className="w-4 h-4" />
             <span>Ad Banners &amp; Commissions ({ads.length})</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('analytics')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 ${
+              activeTab === 'analytics'
+                ? 'bg-rose-600 text-white shadow-lg'
+                : 'bg-white/5 text-gray-400 hover:text-white'
+            }`}
+          >
+            <Globe2 className="w-4 h-4 text-rose-300" />
+            <span>Visitor Traffic &amp; IP Logs ({visitorLogs.length})</span>
           </button>
 
           <button
@@ -860,6 +880,105 @@ export default function AdminPanel({
                   </div>
                 </div>
               ))}
+            </div>
+
+          </div>
+        )}
+
+        {/* TAB 5: VISITOR ANALYTICS & IP LOCATION LOGS */}
+        {activeTab === 'analytics' && (
+          <div className="space-y-6 animate-fade-in">
+            
+            <div className="p-5 rounded-2xl bg-slate-950 border border-rose-500/30">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 rounded-xl bg-rose-500/20 text-rose-400 border border-rose-500/30">
+                    <Globe2 className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-extrabold text-white">Live Visitor IP &amp; Geolocation Logs</h3>
+                    <p className="text-xs text-gray-400">Track real-time visitor IP addresses, cities, countries, device types &amp; access timestamps</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 text-xs font-bold px-3 py-1.5 rounded-full bg-rose-500/10 text-rose-300 border border-rose-500/20">
+                  <Activity className="w-4 h-4 animate-pulse text-rose-400" />
+                  <span>Real-Time Visitor Tracking Active</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Summary Stat Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="p-4 rounded-2xl bg-slate-950 border border-white/10">
+                <span className="text-[10px] text-gray-400 uppercase font-bold block">Total Visited Sessions</span>
+                <span className="text-2xl font-extrabold text-rose-400">{visitorLogs.length}</span>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-slate-950 border border-white/10">
+                <span className="text-[10px] text-gray-400 uppercase font-bold block">Unique Cities / Regions</span>
+                <span className="text-2xl font-extrabold text-cyan-400">
+                  {new Set(visitorLogs.map(l => l.city)).size} Cities
+                </span>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-slate-950 border border-white/10">
+                <span className="text-[10px] text-gray-400 uppercase font-bold block">Primary Country</span>
+                <span className="text-2xl font-extrabold text-emerald-400">
+                  {visitorLogs[0] ? `${visitorLogs[0].country} 🇮🇳` : 'India 🇮🇳'}
+                </span>
+              </div>
+            </div>
+
+            {/* IP Logs Table */}
+            <div className="p-4 rounded-2xl bg-slate-950 border border-white/10 overflow-x-auto">
+              <div className="flex items-center justify-between mb-4">
+                <h4 className="text-xs font-bold text-gray-300 uppercase tracking-wider flex items-center gap-2">
+                  <MapPin className="w-4 h-4 text-cyan-400" />
+                  <span>Detailed Visitor IP &amp; Access History Log</span>
+                </h4>
+                <span className="text-[11px] text-gray-400 font-mono">Recorded Live</span>
+              </div>
+
+              {visitorLogs.length === 0 ? (
+                <div className="text-center py-8 text-gray-400 text-xs">
+                  No visitor IP logs recorded yet. Visit the site once to log your session IP!
+                </div>
+              ) : (
+                <table className="w-full text-left text-xs text-gray-300">
+                  <thead className="bg-white/5 text-gray-400 uppercase text-[10px] tracking-wider">
+                    <tr>
+                      <th className="p-3">Timestamp</th>
+                      <th className="p-3">IP Address</th>
+                      <th className="p-3">City &amp; State</th>
+                      <th className="p-3">Country</th>
+                      <th className="p-3">Device Type</th>
+                      <th className="p-3">Network / ISP</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-white/5">
+                    {visitorLogs.map((log) => (
+                      <tr key={log.id} className="hover:bg-white/5 transition-colors">
+                        <td className="p-3 font-mono text-[11px] text-gray-400">{log.timestamp}</td>
+                        <td className="p-3 font-mono font-bold text-amber-300">{log.ip}</td>
+                        <td className="p-3 font-semibold text-white">{log.city}, {log.region}</td>
+                        <td className="p-3 font-bold text-cyan-300">{log.country}</td>
+                        <td className="p-3">
+                          <span className={`inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-md ${
+                            log.device.includes('Mobile')
+                              ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30'
+                              : 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'
+                          }`}>
+                            {log.device.includes('Mobile') ? <Smartphone className="w-3 h-3" /> : <Laptop className="w-3 h-3" />}
+                            {log.device}
+                          </span>
+                        </td>
+                        <td className="p-3 text-gray-400 text-[11px] truncate max-w-[150px]">{log.org}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
             </div>
 
           </div>

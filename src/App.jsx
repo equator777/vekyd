@@ -18,6 +18,7 @@ import AuthModal from './components/Modals/AuthModal';
 import AdminPanel from './components/Admin/AdminPanel';
 import AdminPasswordModal from './components/Modals/AdminPasswordModal';
 import CartDrawer from './components/CartDrawer';
+import { trackVisitor } from './utils/visitorTracker';
 
 import { INITIAL_GOODS, INITIAL_TRADESMEN, INITIAL_USERS, INITIAL_ADS, TRADE_CATEGORIES } from './data/initialData';
 import { Sparkles } from 'lucide-react';
@@ -36,6 +37,17 @@ export default function App() {
 
   // Theme state
   const [theme, setTheme] = useState(() => localStorage.getItem('tc_theme') || 'dark');
+
+  // Real-Time Visitor IP & Geolocation Tracking state
+  const [visitorLogs, setVisitorLogs] = useState(() => {
+    return JSON.parse(localStorage.getItem('tc_visitor_logs_v2') || '[]');
+  });
+
+  useEffect(() => {
+    trackVisitor().then(logs => {
+      if (logs && logs.length > 0) setVisitorLogs(logs);
+    });
+  }, []);
 
   // Dynamic Trade Categories state
   const [tradeCategories, setTradeCategories] = useState(() => {
@@ -452,6 +464,7 @@ export default function App() {
         ads={ads}
         onAddAd={handleAddAd}
         onDeleteAd={handleDeleteAd}
+        visitorLogs={visitorLogs}
       />
 
       <CartDrawer
