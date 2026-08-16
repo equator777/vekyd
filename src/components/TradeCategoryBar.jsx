@@ -30,8 +30,10 @@ const iconMap = {
   Grid
 };
 
-export default function TradeCategoryBar({ selectedTrade, setSelectedTrade }) {
+export default function TradeCategoryBar({ selectedTrade, setSelectedTrade, tradeCategories }) {
   const scrollContainerRef = useRef(null);
+
+  const categories = tradeCategories && tradeCategories.length > 0 ? tradeCategories : TRADE_CATEGORIES;
 
   const handleScroll = (direction) => {
     if (scrollContainerRef.current) {
@@ -85,7 +87,7 @@ export default function TradeCategoryBar({ selectedTrade, setSelectedTrade }) {
           ref={scrollContainerRef}
           className="flex items-center gap-2.5 overflow-x-auto pb-3 custom-scrollbar-x transition-all"
         >
-          {TRADE_CATEGORIES.map((cat) => {
+          {categories.map((cat) => {
             const IconComponent = iconMap[cat.icon] || Wrench;
             const isSelected = selectedTrade === cat.id;
 

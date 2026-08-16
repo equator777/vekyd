@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { X, UserCheck, Wrench, Sparkles, ShieldCheck, Hammer } from 'lucide-react';
 import { TRADE_CATEGORIES } from '../../data/initialData';
 
-export default function RegisterTradeModal({ isOpen, onClose, onRegisterTrade }) {
+export default function RegisterTradeModal({ isOpen, onClose, onRegisterTrade, tradeCategories }) {
   const [name, setName] = useState('');
   const [tradeCategory, setTradeCategory] = useState('welder');
   const [customTradeCategory, setCustomTradeCategory] = useState('');
@@ -17,6 +17,8 @@ export default function RegisterTradeModal({ isOpen, onClose, onRegisterTrade })
   const [avatarUrl, setAvatarUrl] = useState('');
 
   if (!isOpen) return null;
+
+  const categoriesList = tradeCategories && tradeCategories.length > 0 ? tradeCategories : TRADE_CATEGORIES;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -108,8 +110,8 @@ export default function RegisterTradeModal({ isOpen, onClose, onRegisterTrade })
                 onChange={(e) => setTradeCategory(e.target.value)}
                 className="input-field bg-slate-900 text-white font-bold border border-white/20 focus:border-cyan-400"
               >
-                {TRADE_CATEGORIES.filter(c => c.id !== 'all').map((cat) => (
-                  <option key={cat.id} value={cat.id} className="bg-slate-900 text-white py-1">
+                {categoriesList.filter(c => c.id !== 'all').map((cat) => (
+                  <option key={cat.id} value={cat.name}>
                     {cat.name}
                   </option>
                 ))}

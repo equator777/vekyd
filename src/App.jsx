@@ -19,7 +19,7 @@ import AdminPanel from './components/Admin/AdminPanel';
 import AdminPasswordModal from './components/Modals/AdminPasswordModal';
 import CartDrawer from './components/CartDrawer';
 
-import { INITIAL_GOODS, INITIAL_TRADESMEN, INITIAL_USERS, INITIAL_ADS } from './data/initialData';
+import { INITIAL_GOODS, INITIAL_TRADESMEN, INITIAL_USERS, INITIAL_ADS, TRADE_CATEGORIES } from './data/initialData';
 import { Sparkles } from 'lucide-react';
 
 const sanitizeCurrency = (data) => {
@@ -36,6 +36,12 @@ export default function App() {
 
   // Theme state
   const [theme, setTheme] = useState(() => localStorage.getItem('tc_theme') || 'dark');
+
+  // Dynamic Trade Categories state
+  const [tradeCategories, setTradeCategories] = useState(() => {
+    const saved = localStorage.getItem('tc_trade_categories_v2');
+    return saved ? JSON.parse(saved) : TRADE_CATEGORIES;
+  });
 
   // Core Data Persistence with v2 keys
   const [users, setUsers] = useState(() => {
@@ -123,6 +129,7 @@ export default function App() {
   }, [theme]);
 
   // Sync LocalStorage with v2 keys
+  useEffect(() => { localStorage.setItem('tc_trade_categories_v2', JSON.stringify(tradeCategories)); }, [tradeCategories]);
   useEffect(() => { localStorage.setItem('tc_users_v2', JSON.stringify(users)); }, [users]);
   useEffect(() => { localStorage.setItem('tc_goods_v2', JSON.stringify(goods)); }, [goods]);
   useEffect(() => { localStorage.setItem('tc_tradesmen_v2', JSON.stringify(tradesmen)); }, [tradesmen]);
@@ -253,9 +260,29 @@ export default function App() {
   // Tradesmen Handlers
   const handleRegisterTrade = (newPro) => {
     setTradesmen(prev => [newPro, ...prev]);
+
+    const catName = newPro.tradeCategory;
+    const catId = catName.toLowerCase().replace(/\s+/g, '-');
+
+    setTradeCategories(prev => {
+      const exists = prev.some(c => c.id === catId || c.name.toLowerCase() === catName.toLowerCase());
+      if (exists) return prev;
+      return [
+        ...prev,
+        {
+          id: catId,
+          name: catName,
+          icon: 'Sparkles',
+          count: '1+',
+          gradient: 'from-cyan-500 to-indigo-600',
+          description: `Specialized ${catName} contracting services`
+        }
+      ];
+    });
+
     setActiveTab('trades');
-    setSelectedTrade(newPro.tradeCategory.toLowerCase());
-    showToast(`✓ Welcome ${newPro.name}! Profile registered under ${newPro.tradeCategory}.`);
+    setSelectedTrade(catId);
+    showToast(`✓ Welcome ${newPro.name}! Profile registered under ${catName}.`);
   };
 
   // Count active goods posted by current user for 1-item limit check
@@ -314,6 +341,7 @@ export default function App() {
             setActiveTab('trades');
           }
         }}
+        tradeCategories={tradeCategories}
       />
 
       {/* Main Dynamic Body Switcher */}
@@ -361,6 +389,7 @@ export default function App() {
         isOpen={isRegisterTradeOpen}
         onClose={() => setIsRegisterTradeOpen(false)}
         onRegisterTrade={handleRegisterTrade}
+        tradeCategories={tradeCategories}
       />
 
       <ItemDetailModal
@@ -387,6 +416,7 @@ export default function App() {
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
         user={user}
+        tradeCategories={tradeCategories}
         onLogin={(u) => {
           setUser(u);
           showToast(`Logged in as ${u.name}`);

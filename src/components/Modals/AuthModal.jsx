@@ -2,15 +2,18 @@ import React, { useState } from 'react';
 import { X, User, Lock, Mail, ShieldCheck, Building2, CheckCircle2, IndianRupee, Sparkles } from 'lucide-react';
 import { TRADE_CATEGORIES } from '../../data/initialData';
 
-export default function AuthModal({ isOpen, onClose, user, onLogin, onLogout }) {
+export default function AuthModal({ isOpen, onClose, user, onLogin, onLogout, tradeCategories }) {
   const [isRegister, setIsRegister] = useState(false);
   const [accountType, setAccountType] = useState('general'); // 'general' | 'business' | 'trade'
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [tradeCategory, setTradeCategory] = useState('welder');
   const [businessName, setBusinessName] = useState('');
-  const [tradeCategory, setTradeCategory] = useState('craftsman');
 
   if (!isOpen) return null;
+
+  const categoriesList = tradeCategories && tradeCategories.length > 0 ? tradeCategories : TRADE_CATEGORIES;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -197,7 +200,7 @@ export default function AuthModal({ isOpen, onClose, user, onLogin, onLogout }) 
                     onChange={(e) => setTradeCategory(e.target.value)}
                     className="input-field bg-slate-900 text-white font-bold border border-white/20"
                   >
-                    {TRADE_CATEGORIES.filter(c => c.id !== 'all').map((cat) => (
+                    {categoriesList.filter(c => c.id !== 'all').map((cat) => (
                       <option key={cat.id} value={cat.id} className="bg-slate-900 text-white py-1">
                         {cat.name}
                       </option>
