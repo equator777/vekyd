@@ -91,9 +91,9 @@ export default function App() {
     return sanitizeCurrency(saved ? JSON.parse(saved) : null);
   });
 
-  // Automatically purge legacy mobile cache on v3 release
+  // Automatically purge legacy mobile cache on v4 release
   useEffect(() => {
-    const hasPurged = localStorage.getItem('vekyd_sync_v3');
+    const hasPurged = localStorage.getItem('vekyd_sync_v4');
     if (!hasPurged) {
       localStorage.removeItem('tc_users');
       localStorage.removeItem('tc_goods');
@@ -103,7 +103,12 @@ export default function App() {
       localStorage.removeItem('tc_goods_v2');
       localStorage.removeItem('tc_tradesmen_v2');
       localStorage.removeItem('tc_ads_v2');
-      localStorage.setItem('vekyd_sync_v3', 'true');
+      localStorage.removeItem('tc_users_v3');
+      localStorage.removeItem('tc_goods_v3');
+      localStorage.removeItem('tc_tradesmen_v3');
+      localStorage.removeItem('tc_ads_v3');
+      localStorage.removeItem('tc_trade_categories_v2');
+      localStorage.setItem('vekyd_sync_v4', 'true');
       setUsers(sanitizeCurrency(INITIAL_USERS));
       setGoods(sanitizeCurrency(INITIAL_GOODS));
       setTradesmen(sanitizeCurrency(INITIAL_TRADESMEN));

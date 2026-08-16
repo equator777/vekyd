@@ -1,5 +1,18 @@
 {
-  "updatedAt": "2026-08-16T15:15:00.000Z",
+  "updatedAt": "2026-08-16T15:35:00.000Z",
+  "TRADE_CATEGORIES": [
+    { "id": "all", "name": "All Trades", "icon": "Wrench", "count": "120+" },
+    { "id": "ss-buffer", "name": "SS Buffer", "icon": "Sparkles", "count": "10+", "gradient": "from-cyan-400 to-indigo-600", "description": "Stainless steel buffing, mirror finish polishing & metal refinishing" },
+    { "id": "craftsman", "name": "Craftsman", "icon": "Hammer", "count": "24", "gradient": "from-amber-500 to-orange-600", "description": "Woodworking, metal crafting, custom art & leatherwork" },
+    { "id": "welder", "name": "Welder", "icon": "Flame", "count": "18", "gradient": "from-cyan-500 to-blue-600", "description": "MIG, TIG, Stick welding, structural metal & gates" },
+    { "id": "electrician", "name": "Electrician", "icon": "Zap", "count": "32", "gradient": "from-yellow-400 to-amber-500", "description": "Rewiring, EV chargers, panels, smart home setup" },
+    { "id": "plumber", "name": "Plumber", "icon": "Droplets", "count": "29", "gradient": "from-blue-500 to-indigo-600", "description": "Emergency repairs, water heaters, piping & fixtures" },
+    { "id": "mason", "name": "Mason", "icon": "Boxes", "count": "15", "gradient": "from-stone-500 to-neutral-700", "description": "Bricklaying, stone patios, chimneys & concrete work" },
+    { "id": "carpenter", "name": "Carpenter", "icon": "Ruler", "count": "22", "gradient": "from-emerald-500 to-teal-700", "description": "Framing, custom cabinetry, decks & trim carpentry" },
+    { "id": "painter", "name": "Painter", "icon": "Paintbrush", "count": "20", "gradient": "from-pink-500 to-rose-600", "description": "Interior/exterior, drywall repair, spray finishes" },
+    { "id": "hvac", "name": "HVAC Tech", "icon": "Wind", "count": "16", "gradient": "from-violet-500 to-purple-700", "description": "Heating, AC repair, heat pumps, air quality" },
+    { "id": "landscaper", "name": "Landscaper", "icon": "Trees", "count": "19", "gradient": "from-green-500 to-emerald-600", "description": "Hardscaping, sod installation, irrigation & gardens" }
+  ],
   "users": [
     {
       "id": "u-admin",
@@ -36,6 +49,57 @@
         "70% Off Original Price"
       ],
       "featured": true
+    }
+  ],
+  "tradesmen": [
+    {
+      "id": "t-ss-buffer-1",
+      "name": "Kamlesh Daga",
+      "tradeCategory": "SS Buffer",
+      "title": "Master SS Buffer & Metal Surface Finishing Specialist",
+      "experienceYears": 12,
+      "hourlyRate": 1200,
+      "location": "Mumbai / Local Service Region",
+      "rating": 5.0,
+      "reviewCount": 18,
+      "verificationStatus": "Verified Pro",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200",
+      "bio": "Expert in Stainless Steel (SS) buffing, mirror finish polishing, scratch removal, and high-precision metal surface restoration for residential, commercial, and industrial equipment.",
+      "skills": [
+        "Stainless Steel Buffing",
+        "Mirror Finish Polishing",
+        "Scratch & Weld Stain Removal",
+        "Architectural SS Refinishing",
+        "Industrial Pipe & Rail Polishing"
+      ],
+      "portfolio": [
+        "https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&q=80&w=600",
+        "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&q=80&w=600"
+      ],
+      "phone": "(+91) 98765-43210",
+      "email": "ssbuffer.pro@vekyd.com",
+      "availableNow": true
+    },
+    {
+      "id": "t-1",
+      "name": "Marcus Vance",
+      "tradeCategory": "Welder",
+      "title": "Certified Master Welder & Steel Fabricator",
+      "experienceYears": 14,
+      "hourlyRate": 85,
+      "location": "Denver, CO (Service radius 45 miles)",
+      "rating": 4.95,
+      "reviewCount": 42,
+      "verificationStatus": "Verified Master Pro",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200",
+      "bio": "Specialized in structural steel TIG/MIG welding, custom gate fabrication, architectural metalwork, and heavy equipment repair. Certified AWS Inspector on call.",
+      "skills": ["TIG / MIG Welding", "Structural Steel", "Custom Metal Gates", "Aluminum Fabrication", "AWS Certified"],
+      "portfolio": [
+        "https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&q=80&w=600"
+      ],
+      "phone": "(555) 019-2834",
+      "email": "marcus.welding@example.com",
+      "availableNow": true
     }
   ],
   "ads": [

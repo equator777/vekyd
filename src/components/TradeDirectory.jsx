@@ -52,9 +52,14 @@ export default function TradeDirectory({
         }
       }
 
-      // 2. Category match (only if selectedTrade is not 'all' AND user hasn't typed a search query)
-      if (selectedTrade !== 'all' && pro.tradeCategory.toLowerCase() !== selectedTrade.toLowerCase()) {
-        if (!searchQuery || searchQuery.trim() === '') return false;
+      // 2. Category match (handles spaces, hyphens, and casing smoothly)
+      if (selectedTrade !== 'all') {
+        const proCat = (pro.tradeCategory || '').toLowerCase().replace(/[\s\-_]+/g, '');
+        const selCat = (selectedTrade || '').toLowerCase().replace(/[\s\-_]+/g, '');
+        const matchesCat = proCat === selCat || proCat.includes(selCat) || selCat.includes(proCat);
+        if (!matchesCat) {
+          if (!searchQuery || searchQuery.trim() === '') return false;
+        }
       }
 
       // 3. Hourly rate match
