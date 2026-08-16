@@ -5,6 +5,7 @@ import { TRADE_CATEGORIES } from '../../data/initialData';
 export default function RegisterTradeModal({ isOpen, onClose, onRegisterTrade }) {
   const [name, setName] = useState('');
   const [tradeCategory, setTradeCategory] = useState('welder');
+  const [customTradeCategory, setCustomTradeCategory] = useState('');
   const [title, setTitle] = useState('');
   const [experienceYears, setExperienceYears] = useState('');
   const [hourlyRate, setHourlyRate] = useState('');
@@ -21,10 +22,14 @@ export default function RegisterTradeModal({ isOpen, onClose, onRegisterTrade })
     e.preventDefault();
     if (!name || !title || !hourlyRate) return;
 
+    const finalTradeCategory = tradeCategory === 'other' 
+      ? (customTradeCategory.trim() || 'Custom Trade Specialist') 
+      : tradeCategory;
+
     const newTradesman = {
       id: `t-custom-${Date.now()}`,
       name,
-      tradeCategory,
+      tradeCategory: finalTradeCategory,
       title,
       experienceYears: Number(experienceYears) || 5,
       hourlyRate: Number(hourlyRate),
@@ -49,6 +54,8 @@ export default function RegisterTradeModal({ isOpen, onClose, onRegisterTrade })
     // Reset
     setName('');
     setTitle('');
+    setTradeCategory('welder');
+    setCustomTradeCategory('');
     setHourlyRate('');
     setExperienceYears('');
     setBio('');
@@ -99,16 +106,34 @@ export default function RegisterTradeModal({ isOpen, onClose, onRegisterTrade })
               <select
                 value={tradeCategory}
                 onChange={(e) => setTradeCategory(e.target.value)}
-                className="input-field bg-slate-950 text-white font-bold"
+                className="input-field bg-slate-900 text-white font-bold border border-white/20 focus:border-cyan-400"
               >
                 {TRADE_CATEGORIES.filter(c => c.id !== 'all').map((cat) => (
-                  <option key={cat.id} value={cat.id}>
+                  <option key={cat.id} value={cat.id} className="bg-slate-900 text-white py-1">
                     {cat.name}
                   </option>
                 ))}
+                <option value="other" className="bg-slate-900 text-amber-300 font-bold py-1">
+                  + Other (Register Custom Trade Category)
+                </option>
               </select>
             </div>
           </div>
+
+          {/* Custom Trade Name Input */}
+          {tradeCategory === 'other' && (
+            <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 animate-fade-in">
+              <label className="label text-amber-300 font-bold text-xs">Enter Your Custom Trade Category Name *</label>
+              <input
+                type="text"
+                required
+                placeholder="e.g., Solar Technician, Roofer, Locksmith, HVAC Specialist, Contractor..."
+                value={customTradeCategory}
+                onChange={(e) => setCustomTradeCategory(e.target.value)}
+                className="input-field bg-slate-950 text-white border-amber-500/40 text-xs font-semibold"
+              />
+            </div>
+          )}
 
           <div>
             <label className="label">Professional Title / Headline *</label>

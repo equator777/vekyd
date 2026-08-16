@@ -150,15 +150,15 @@ export default function PostGoodsModal({
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="input-field bg-slate-950 text-white"
+                  className="input-field bg-slate-900 text-white font-bold border border-white/20"
                 >
-                  <option value="groceries">Groceries &amp; Pantry</option>
-                  <option value="tools">Power &amp; Hand Tools</option>
-                  <option value="electronics">Electronics &amp; Tech</option>
-                  <option value="furniture">Furniture &amp; Decor</option>
-                  <option value="vehicles">Bikes &amp; Vehicles</option>
-                  <option value="collectibles">Vintage &amp; Collectibles</option>
-                  <option value="garden">Home &amp; Outdoor</option>
+                  <option value="groceries" className="bg-slate-900 text-white py-1">Groceries &amp; Pantry</option>
+                  <option value="tools" className="bg-slate-900 text-white py-1">Power &amp; Hand Tools</option>
+                  <option value="electronics" className="bg-slate-900 text-white py-1">Electronics &amp; Tech</option>
+                  <option value="furniture" className="bg-slate-900 text-white py-1">Furniture &amp; Decor</option>
+                  <option value="vehicles" className="bg-slate-900 text-white py-1">Bikes &amp; Vehicles</option>
+                  <option value="collectibles" className="bg-slate-900 text-white py-1">Vintage &amp; Collectibles</option>
+                  <option value="garden" className="bg-slate-900 text-white py-1">Home &amp; Outdoor</option>
                 </select>
               </div>
 
@@ -167,13 +167,13 @@ export default function PostGoodsModal({
                 <select
                   value={condition}
                   onChange={(e) => setCondition(e.target.value)}
-                  className="input-field bg-slate-950 text-white"
+                  className="input-field bg-slate-900 text-white font-bold border border-white/20"
                 >
-                  <option value="Brand New / Fresh">Brand New / Fresh Pantry</option>
-                  <option value="Like New">Like New</option>
-                  <option value="Excellent">Excellent</option>
-                  <option value="Good">Good</option>
-                  <option value="Fair">Fair</option>
+                  <option value="Brand New / Fresh" className="bg-slate-900 text-white py-1">Brand New / Fresh Pantry</option>
+                  <option value="Like New" className="bg-slate-900 text-white py-1">Like New</option>
+                  <option value="Excellent" className="bg-slate-900 text-white py-1">Excellent</option>
+                  <option value="Good" className="bg-slate-900 text-white py-1">Good</option>
+                  <option value="Fair" className="bg-slate-900 text-white py-1">Fair</option>
                 </select>
               </div>
             </div>

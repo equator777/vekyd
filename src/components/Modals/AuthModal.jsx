@@ -195,10 +195,10 @@ export default function AuthModal({ isOpen, onClose, user, onLogin, onLogout }) 
                   <select
                     value={tradeCategory}
                     onChange={(e) => setTradeCategory(e.target.value)}
-                    className="input-field bg-slate-950 text-white font-bold"
+                    className="input-field bg-slate-900 text-white font-bold border border-white/20"
                   >
                     {TRADE_CATEGORIES.filter(c => c.id !== 'all').map((cat) => (
-                      <option key={cat.id} value={cat.id}>
+                      <option key={cat.id} value={cat.id} className="bg-slate-900 text-white py-1">
                         {cat.name}
                       </option>
                     ))}

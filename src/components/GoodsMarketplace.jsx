@@ -125,14 +125,14 @@ export default function GoodsMarketplace({
               <select
                 value={selectedCondition}
                 onChange={(e) => setSelectedCondition(e.target.value)}
-                className="input-field text-xs py-2 bg-slate-950/80 text-white border-white/10"
+                className="input-field text-xs py-2 bg-slate-900 text-white border-white/20 font-bold"
               >
-                <option value="all">All Conditions &amp; Fresh Goods</option>
-                <option value="Brand New / Fresh">Brand New / Fresh Pantry</option>
-                <option value="Like New">Like New</option>
-                <option value="Excellent">Excellent</option>
-                <option value="Good">Good</option>
-                <option value="Fair">Fair</option>
+                <option value="all" className="bg-slate-900 text-white py-1">All Conditions &amp; Fresh Goods</option>
+                <option value="Brand New / Fresh" className="bg-slate-900 text-white py-1">Brand New / Fresh Pantry</option>
+                <option value="Like New" className="bg-slate-900 text-white py-1">Like New</option>
+                <option value="Excellent" className="bg-slate-900 text-white py-1">Excellent</option>
+                <option value="Good" className="bg-slate-900 text-white py-1">Good</option>
+                <option value="Fair" className="bg-slate-900 text-white py-1">Fair</option>
               </select>
             </div>
 
@@ -159,11 +159,11 @@ export default function GoodsMarketplace({
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="input-field text-xs py-2 bg-slate-950/80 text-white border-white/10"
+                className="input-field text-xs py-2 bg-slate-900 text-white border-white/20 font-bold"
               >
-                <option value="newest">Newest Listings</option>
-                <option value="price-low">Price: Low to High</option>
-                <option value="price-high">Price: High to Low</option>
+                <option value="newest" className="bg-slate-900 text-white py-1">Newest Listings</option>
+                <option value="price-low" className="bg-slate-900 text-white py-1">Price: Low to High</option>
+                <option value="price-high" className="bg-slate-900 text-white py-1">Price: High to Low</option>
               </select>
             </div>
 
