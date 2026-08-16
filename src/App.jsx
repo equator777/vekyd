@@ -21,6 +21,12 @@ import CartDrawer from './components/CartDrawer';
 import { INITIAL_GOODS, INITIAL_TRADESMEN, INITIAL_USERS, INITIAL_ADS } from './data/initialData';
 import { Sparkles } from 'lucide-react';
 
+const sanitizeCurrency = (data) => {
+  if (!data) return data;
+  const jsonStr = JSON.stringify(data).replace(/\$/g, '₹');
+  return JSON.parse(jsonStr);
+};
+
 export default function App() {
   // Navigation & Search State
   const [activeTab, setActiveTab] = useState('goods'); // 'goods' | 'trades'
@@ -30,41 +36,59 @@ export default function App() {
   // Theme state
   const [theme, setTheme] = useState(() => localStorage.getItem('tc_theme') || 'dark');
 
-  // Core Data Persistence
+  // Core Data Persistence with v2 keys
   const [users, setUsers] = useState(() => {
-    const saved = localStorage.getItem('tc_users');
-    return saved ? JSON.parse(saved) : INITIAL_USERS;
+    const saved = localStorage.getItem('tc_users_v2');
+    return sanitizeCurrency(saved ? JSON.parse(saved) : INITIAL_USERS);
   });
 
   const [goods, setGoods] = useState(() => {
-    const saved = localStorage.getItem('tc_goods');
-    return saved ? JSON.parse(saved) : INITIAL_GOODS;
+    const saved = localStorage.getItem('tc_goods_v2');
+    return sanitizeCurrency(saved ? JSON.parse(saved) : INITIAL_GOODS);
   });
 
   const [tradesmen, setTradesmen] = useState(() => {
-    const saved = localStorage.getItem('tc_tradesmen');
-    return saved ? JSON.parse(saved) : INITIAL_TRADESMEN;
+    const saved = localStorage.getItem('tc_tradesmen_v2');
+    return sanitizeCurrency(saved ? JSON.parse(saved) : INITIAL_TRADESMEN);
   });
 
   const [ads, setAds] = useState(() => {
-    const saved = localStorage.getItem('tc_ads');
-    return saved ? JSON.parse(saved) : INITIAL_ADS;
+    const saved = localStorage.getItem('tc_ads_v2');
+    return sanitizeCurrency(saved ? JSON.parse(saved) : INITIAL_ADS);
   });
 
   const [favorites, setFavorites] = useState(() => {
-    const saved = localStorage.getItem('tc_favorites');
+    const saved = localStorage.getItem('tc_favorites_v2');
     return saved ? JSON.parse(saved) : ['g-1', 'g-biz-1'];
   });
 
   const [cartItems, setCartItems] = useState(() => {
-    const saved = localStorage.getItem('tc_cart');
-    return saved ? JSON.parse(saved) : [];
+    const saved = localStorage.getItem('tc_cart_v2');
+    return sanitizeCurrency(saved ? JSON.parse(saved) : []);
   });
 
   const [user, setUser] = useState(() => {
-    const saved = localStorage.getItem('tc_user');
-    return saved ? JSON.parse(saved) : null; // Default null (regular visitor)
+    const saved = localStorage.getItem('tc_user_v2');
+    return sanitizeCurrency(saved ? JSON.parse(saved) : null);
   });
+
+  // Automatically purge legacy dollar cache
+  useEffect(() => {
+    const hasPurged = localStorage.getItem('vekyd_rupee_purged_v2');
+    if (!hasPurged) {
+      localStorage.removeItem('tc_users');
+      localStorage.removeItem('tc_goods');
+      localStorage.removeItem('tc_tradesmen');
+      localStorage.removeItem('tc_ads');
+      localStorage.removeItem('tc_cart');
+      localStorage.removeItem('tc_user');
+      localStorage.setItem('vekyd_rupee_purged_v2', 'true');
+      setUsers(sanitizeCurrency(INITIAL_USERS));
+      setGoods(sanitizeCurrency(INITIAL_GOODS));
+      setTradesmen(sanitizeCurrency(INITIAL_TRADESMEN));
+      setAds(sanitizeCurrency(INITIAL_ADS));
+    }
+  }, []);
 
   // Modal Visibility States
   const [isPostGoodsOpen, setIsPostGoodsOpen] = useState(false);
@@ -97,16 +121,16 @@ export default function App() {
     localStorage.setItem('tc_theme', theme);
   }, [theme]);
 
-  // Sync LocalStorage
-  useEffect(() => { localStorage.setItem('tc_users', JSON.stringify(users)); }, [users]);
-  useEffect(() => { localStorage.setItem('tc_goods', JSON.stringify(goods)); }, [goods]);
-  useEffect(() => { localStorage.setItem('tc_tradesmen', JSON.stringify(tradesmen)); }, [tradesmen]);
-  useEffect(() => { localStorage.setItem('tc_ads', JSON.stringify(ads)); }, [ads]);
-  useEffect(() => { localStorage.setItem('tc_favorites', JSON.stringify(favorites)); }, [favorites]);
-  useEffect(() => { localStorage.setItem('tc_cart', JSON.stringify(cartItems)); }, [cartItems]);
+  // Sync LocalStorage with v2 keys
+  useEffect(() => { localStorage.setItem('tc_users_v2', JSON.stringify(users)); }, [users]);
+  useEffect(() => { localStorage.setItem('tc_goods_v2', JSON.stringify(goods)); }, [goods]);
+  useEffect(() => { localStorage.setItem('tc_tradesmen_v2', JSON.stringify(tradesmen)); }, [tradesmen]);
+  useEffect(() => { localStorage.setItem('tc_ads_v2', JSON.stringify(ads)); }, [ads]);
+  useEffect(() => { localStorage.setItem('tc_favorites_v2', JSON.stringify(favorites)); }, [favorites]);
+  useEffect(() => { localStorage.setItem('tc_cart_v2', JSON.stringify(cartItems)); }, [cartItems]);
   useEffect(() => {
-    if (user) localStorage.setItem('tc_user', JSON.stringify(user));
-    else localStorage.removeItem('tc_user');
+    if (user) localStorage.setItem('tc_user_v2', JSON.stringify(user));
+    else localStorage.removeItem('tc_user_v2');
   }, [user]);
 
   const toggleTheme = () => {
@@ -391,6 +415,7 @@ export default function App() {
         onDeleteUser={handleDeleteUser}
         onToggleBusinessTier={handleToggleBusinessTier}
         goods={goods}
+        onAddGoods={handleAddGoods}
         onDeleteGoods={handleDeleteGoods}
         onRenewGoodsExpiry={handleRenewGoodsExpiry}
         ads={ads}

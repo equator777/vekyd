@@ -69,7 +69,7 @@ export default function TradeDetailModal({
 
           <div className="text-left sm:text-right border-t sm:border-t-0 sm:border-l border-white/10 pt-3 sm:pt-0 sm:pl-4">
             <div className="text-2xl font-extrabold text-white">
-              ${tradesman.hourlyRate}<span className="text-xs font-normal text-gray-400">/hr</span>
+              ₹{tradesman.hourlyRate}<span className="text-xs font-normal text-gray-400">/hr</span>
             </div>
             <div className="flex items-center text-sm font-bold text-amber-400 mt-1">
               <Star className="w-4 h-4 fill-amber-400 mr-1" />

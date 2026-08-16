@@ -4,7 +4,7 @@ import {
   ShieldCheck, 
   Users, 
   ShoppingBag, 
-  DollarSign, 
+  IndianRupee, 
   UserPlus, 
   Trash2, 
   RotateCcw, 
@@ -21,6 +21,7 @@ import {
   Key
 } from 'lucide-react';
 import { commitDataToGitHub } from '../../utils/githubSync';
+import { GOODS_CATEGORIES } from '../../data/initialData';
 
 export default function AdminPanel({
   isOpen,
@@ -30,6 +31,7 @@ export default function AdminPanel({
   onDeleteUser,
   onToggleBusinessTier,
   goods,
+  onAddGoods,
   onDeleteGoods,
   onRenewGoodsExpiry,
   ads,
@@ -40,7 +42,7 @@ export default function AdminPanel({
   const [userSearch, setUserSearch] = useState('');
   
   // GitHub Settings State (persisted in localStorage)
-  const [ghOwner, setGhOwner] = useState(() => localStorage.getItem('vekyd_gh_owner') || 'equator777');
+  const [ghOwner, setGhOwner] = useState(() => localStorage.getItem('vekyd_gh_owner') || 'vekyd-org');
   const [ghRepo, setGhRepo] = useState(() => localStorage.getItem('vekyd_gh_repo') || 'vekyd');
   const [ghToken, setGhToken] = useState(() => localStorage.getItem('vekyd_gh_token') || '');
   
@@ -59,6 +61,18 @@ export default function AdminPanel({
   const [newUserName, setNewUserName] = useState('');
   const [newUserEmail, setNewUserEmail] = useState('');
   const [newUserType, setNewUserType] = useState('business');
+
+  // New Product Form State
+  const [isAddProductOpen, setIsAddProductOpen] = useState(false);
+  const [prodTitle, setProdTitle] = useState('');
+  const [prodPrice, setProdPrice] = useState('');
+  const [prodCategory, setProdCategory] = useState('tools');
+  const [prodCondition, setProdCondition] = useState('Like New');
+  const [prodImage, setProdImage] = useState('');
+  const [prodSeller, setProdSeller] = useState('');
+  const [prodContact, setProdContact] = useState('');
+  const [prodLocation, setProdLocation] = useState('');
+  const [prodDesc, setProdDesc] = useState('');
 
   // New Ad Banner Form State
   const [isAddAdOpen, setIsAddAdOpen] = useState(false);
@@ -141,7 +155,7 @@ export default function AdminPanel({
       name: newUserName,
       email: newUserEmail,
       userType: newUserType,
-      role: newUserType === 'business' ? 'Pro Business Member ($500/mo)' : newUserType === 'general' ? 'General Seller' : 'Skilled Trade Pro',
+      role: newUserType === 'business' ? 'Pro Business Member (₹500/mo)' : newUserType === 'general' ? 'General Seller' : 'Skilled Trade Pro',
       subscriptionExpiresAt: newUserType === 'business' ? Date.now() + 30 * 24 * 60 * 60 * 1000 : null,
       avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
       registeredDate: new Date().toISOString().split('T')[0]
@@ -151,6 +165,42 @@ export default function AdminPanel({
     setIsAddUserOpen(false);
     setNewUserName('');
     setNewUserEmail('');
+  };
+
+  const handleCreateProduct = (e) => {
+    e.preventDefault();
+    if (!prodTitle || !prodPrice) return;
+
+    const newItem = {
+      id: `g-${Date.now()}`,
+      title: prodTitle,
+      price: Number(prodPrice),
+      originalPrice: Number(prodPrice) * 1.2,
+      category: prodCategory,
+      condition: prodCondition,
+      image: prodImage || 'https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&q=80&w=800',
+      sellerId: 'admin-1',
+      sellerName: prodSeller || 'Vekyd Verified Seller',
+      sellerType: 'business',
+      sellerContact: prodContact || 'sales@vekyd.com',
+      location: prodLocation || 'United States',
+      description: prodDesc || 'Product added via Vekyd Admin Control Console.',
+      createdAt: new Date().toISOString(),
+      expiresAt: Date.now() + 30 * 24 * 60 * 60 * 1000
+    };
+
+    if (onAddGoods) {
+      onAddGoods(newItem);
+    }
+
+    setIsAddProductOpen(false);
+    setProdTitle('');
+    setProdPrice('');
+    setProdImage('');
+    setProdSeller('');
+    setProdContact('');
+    setProdLocation('');
+    setProdDesc('');
   };
 
   const handleCreateAd = (e) => {
@@ -207,18 +257,18 @@ export default function AdminPanel({
                 <h2 className="text-2xl font-extrabold text-white">Vekyd Admin Control Console</h2>
                 <span className="badge badge-rose text-[10px]">Site Owner Portal</span>
               </div>
-              <p className="text-xs text-gray-400">Manage users, 30-day listing timers, $500/mo subscriptions &amp; GitHub live deployment</p>
+              <p className="text-xs text-gray-400">Manage users, 30-day listing timers, ₹500/mo subscriptions &amp; GitHub live deployment</p>
             </div>
           </div>
 
           {/* Revenue Stat Widget */}
           <div className="flex items-center gap-3 p-3 rounded-2xl bg-slate-950 border border-emerald-500/30">
             <div className="p-2 rounded-xl bg-emerald-500/20 text-emerald-400">
-              <DollarSign className="w-5 h-5" />
+              <IndianRupee className="w-5 h-5" />
             </div>
             <div>
               <span className="text-[10px] text-gray-400 uppercase font-bold block">Est. Monthly Ad &amp; Sub Revenue</span>
-              <span className="text-lg font-extrabold text-emerald-400">${estimatedMonthlyRevenue} <span className="text-xs text-gray-400 font-normal">/mo</span></span>
+              <span className="text-lg font-extrabold text-emerald-400">₹{estimatedMonthlyRevenue} <span className="text-xs text-gray-400 font-normal">/mo</span></span>
             </div>
           </div>
         </div>
@@ -444,7 +494,7 @@ export default function AdminPanel({
                     className="input-field text-xs bg-slate-950 text-white font-bold"
                   >
                     <option value="general">General Seller (1 Item Max / 30 Days)</option>
-                    <option value="business">Business User ($500/mo Sub - Unlimited Items)</option>
+                    <option value="business">Business User (₹500/mo Sub - Unlimited Items)</option>
                     <option value="tradesman">Skilled Trade Professional</option>
                   </select>
                 </div>
@@ -484,14 +534,14 @@ export default function AdminPanel({
                           u.userType === 'business' ? 'badge-amber' :
                           u.userType === 'tradesman' ? 'badge-cyan' : 'badge-indigo'
                         }`}>
-                          {u.userType === 'business' ? 'Business ($500/mo)' : u.userType.toUpperCase()}
+                          {u.userType === 'business' ? 'Business (₹500/mo)' : u.userType.toUpperCase()}
                         </span>
                       </td>
                       <td className="p-3">
                         {u.userType === 'business' ? (
                           <span className="text-emerald-400 font-bold flex items-center gap-1">
                             <CheckCircle2 className="w-3.5 h-3.5" />
-                            Active $500/mo Sub
+                            Active ₹500/mo Sub
                           </span>
                         ) : u.userType === 'general' ? (
                           <span className="text-gray-400">1 Item / 30-Day Limit</span>
@@ -504,7 +554,7 @@ export default function AdminPanel({
                           onClick={() => onToggleBusinessTier(u.id)}
                           className="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/30 font-bold transition-all"
                         >
-                          {u.userType === 'business' ? 'Downgrade to General' : 'Upgrade to Business ($500)'}
+                          {u.userType === 'business' ? 'Downgrade to General' : 'Upgrade to Business (₹500)'}
                         </button>
                         {u.userType !== 'admin' && (
                           <button
@@ -527,6 +577,126 @@ export default function AdminPanel({
         {/* TAB 2: LISTINGS CONTROL & 30-DAY TIMERS */}
         {activeTab === 'listings' && (
           <div>
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4">
+              <div>
+                <h4 className="text-sm font-bold text-white uppercase tracking-wider">Product Listings &amp; 30-Day Timers</h4>
+                <p className="text-xs text-gray-400">Add real products or delete initial demo products directly</p>
+              </div>
+              <button
+                onClick={() => setIsAddProductOpen(!isAddProductOpen)}
+                className="btn btn-primary text-xs py-2 px-4 font-bold shrink-0 flex items-center gap-1.5"
+              >
+                <PlusCircle className="w-4 h-4" />
+                <span>+ Add Real Product</span>
+              </button>
+            </div>
+
+            {/* Form for adding a new product */}
+            {isAddProductOpen && (
+              <form onSubmit={handleCreateProduct} className="p-4 mb-4 rounded-2xl bg-white/5 border border-indigo-500/30 space-y-3 animate-fade-in">
+                <h4 className="text-xs font-bold text-indigo-300 uppercase tracking-wider">Add New Product for Sale</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div>
+                    <label className="label text-xs">Product Title *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g., DeWalt 20V Cordless Drill Combo"
+                      value={prodTitle}
+                      onChange={(e) => setProdTitle(e.target.value)}
+                      className="input-field text-xs"
+                    />
+                  </div>
+                  <div>
+                    <label className="label text-xs">Price (₹) *</label>
+                    <input
+                      type="number"
+                      required
+                      placeholder="e.g., 185"
+                      value={prodPrice}
+                      onChange={(e) => setProdPrice(e.target.value)}
+                      className="input-field text-xs"
+                    />
+                  </div>
+                  <div>
+                    <label className="label text-xs">Category *</label>
+                    <select
+                      value={prodCategory}
+                      onChange={(e) => setProdCategory(e.target.value)}
+                      className="input-field text-xs bg-slate-950 text-white font-bold"
+                    >
+                      {GOODS_CATEGORIES.filter(c => c.id !== 'all').map((cat) => (
+                        <option key={cat.id} value={cat.id}>{cat.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div>
+                    <label className="label text-xs">Condition</label>
+                    <select
+                      value={prodCondition}
+                      onChange={(e) => setProdCondition(e.target.value)}
+                      className="input-field text-xs bg-slate-950 text-white font-bold"
+                    >
+                      <option value="Brand New / Fresh">Brand New / Fresh Pantry</option>
+                      <option value="Like New">Like New</option>
+                      <option value="Excellent">Excellent</option>
+                      <option value="Good">Good</option>
+                      <option value="Fair">Fair</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="label text-xs">Seller Name</label>
+                    <input
+                      type="text"
+                      placeholder="e.g., Apex Hardware & Supply"
+                      value={prodSeller}
+                      onChange={(e) => setProdSeller(e.target.value)}
+                      className="input-field text-xs"
+                    />
+                  </div>
+                  <div>
+                    <label className="label text-xs">Contact Email / Phone</label>
+                    <input
+                      type="text"
+                      placeholder="e.g., (555) 019-2831"
+                      value={prodContact}
+                      onChange={(e) => setProdContact(e.target.value)}
+                      className="input-field text-xs"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="label text-xs">Image URL (Optional)</label>
+                  <input
+                    type="url"
+                    placeholder="https://images.unsplash.com/..."
+                    value={prodImage}
+                    onChange={(e) => setProdImage(e.target.value)}
+                    className="input-field text-xs"
+                  />
+                </div>
+
+                <div>
+                  <label className="label text-xs">Description &amp; Location</label>
+                  <textarea
+                    rows={2}
+                    placeholder="Provide details on product condition, specs, location, and delivery..."
+                    value={prodDesc}
+                    onChange={(e) => setProdDesc(e.target.value)}
+                    className="input-field text-xs"
+                  />
+                </div>
+
+                <div className="flex justify-end gap-2 pt-2">
+                  <button type="button" onClick={() => setIsAddProductOpen(false)} className="btn btn-secondary text-xs py-1.5">Cancel</button>
+                  <button type="submit" className="btn btn-primary text-xs py-1.5 font-bold">Publish Product Listing</button>
+                </div>
+              </form>
+            )}
             <div className="overflow-x-auto rounded-2xl border border-white/10 bg-slate-950">
               <table className="w-full text-left text-xs text-gray-300">
                 <thead className="bg-white/5 text-gray-400 font-bold uppercase tracking-wider border-b border-white/10">
@@ -562,7 +732,7 @@ export default function AdminPanel({
                             {item.sellerType === 'business' ? 'Verified Business' : 'General Seller'}
                           </span>
                         </td>
-                        <td className="p-3 font-extrabold text-white">${item.price}</td>
+                        <td className="p-3 font-extrabold text-white">₹{item.price}</td>
                         <td className="p-3">
                           {isExpired ? (
                             <span className="badge badge-rose flex items-center gap-1">
@@ -611,7 +781,7 @@ export default function AdminPanel({
                 className="btn btn-warm text-xs py-2 px-4 font-bold"
               >
                 <PlusCircle className="w-4 h-4" />
-                <span>Create New Sponsor Ad ($500/mo)</span>
+                <span>Create New Sponsor Ad (₹500/mo)</span>
               </button>
             </div>
 
@@ -677,7 +847,7 @@ export default function AdminPanel({
                     <p className="text-xs text-gray-400 mb-3">{ad.subtitle}</p>
                     <div className="flex items-center justify-between text-xs text-emerald-400 font-bold">
                       <span>Recorded Clicks: {ad.clicks}</span>
-                      <span className="text-amber-300">Revenue: $500/mo</span>
+                      <span className="text-amber-300">Revenue: ₹500/mo</span>
                     </div>
                   </div>
                   <div className="pt-3 mt-3 border-t border-white/10 flex justify-end">

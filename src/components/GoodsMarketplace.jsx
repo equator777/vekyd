@@ -83,7 +83,7 @@ export default function GoodsMarketplace({
               <span>Products, Groceries &amp; <span className="text-gradient">Goods Marketplace</span></span>
             </h2>
             <p className="text-xs sm:text-sm text-gray-400 mt-1">
-              General users get <strong className="text-cyan-300">1 item / 30-day listing</strong>. Verified Businesses ($500/mo) list <strong className="text-amber-300">unlimited items &amp; groceries</strong>.
+              General users get <strong className="text-cyan-300">1 item / 30-day listing</strong>. Verified Businesses (₹500/mo) list <strong className="text-amber-300">unlimited items &amp; groceries</strong>.
             </p>
           </div>
 
@@ -140,7 +140,7 @@ export default function GoodsMarketplace({
             <div>
               <div className="flex justify-between items-center mb-1">
                 <label className="label text-xs mb-0">Max Price</label>
-                <span className="text-xs font-bold text-indigo-400">${maxPrice}</span>
+                <span className="text-xs font-bold text-indigo-400">₹{maxPrice}</span>
               </div>
               <input
                 type="range"
@@ -282,7 +282,7 @@ export default function GoodsMarketplace({
                             {item.sellerType === 'business' ? (
                               <span className="text-[10px] text-amber-300 font-extrabold flex items-center gap-1">
                                 <Building2 className="w-3 h-3 text-amber-400" />
-                                Verified Business ($500/mo)
+                                Verified Business (₹500/mo)
                               </span>
                             ) : (
                               <span className="text-[10px] text-gray-400 block truncate">General Seller (1 Item Max)</span>
@@ -301,11 +301,11 @@ export default function GoodsMarketplace({
                     <div className="pt-3 border-t border-white/10 flex items-center justify-between gap-2">
                       <div>
                         <div className="text-lg font-extrabold text-white">
-                          ${item.price}
+                          ₹{item.price}
                         </div>
                         {item.originalPrice && (
                           <div className="text-[11px] text-gray-400 line-through">
-                            ${item.originalPrice}
+                            ₹{item.originalPrice}
                           </div>
                         )}
                       </div>

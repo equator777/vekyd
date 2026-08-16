@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, User, Lock, Mail, ShieldCheck, Building2, CheckCircle2, DollarSign, Sparkles } from 'lucide-react';
+import { X, User, Lock, Mail, ShieldCheck, Building2, CheckCircle2, IndianRupee, Sparkles } from 'lucide-react';
 import { TRADE_CATEGORIES } from '../../data/initialData';
 
 export default function AuthModal({ isOpen, onClose, user, onLogin, onLogout }) {
@@ -29,7 +29,7 @@ export default function AuthModal({ isOpen, onClose, user, onLogin, onLogout }) 
       email: email || 'user@example.com',
       userType: accountType,
       role: accountType === 'business'
-        ? 'Verified Business Member ($500/mo)'
+        ? 'Verified Business Member (₹500/mo)'
         : accountType === 'trade'
         ? `${tradeCategory.toUpperCase()} PRO`
         : 'General Seller (1 Item Max)',
@@ -88,7 +88,7 @@ export default function AuthModal({ isOpen, onClose, user, onLogin, onLogout }) 
                   {isRegister ? 'Select Account Tier & Register' : 'Welcome Back'}
                 </h2>
                 <p className="text-xs text-gray-400">
-                  {isRegister ? 'Choose General Seller (Free), Business ($500/mo), or Skilled Trade' : 'Sign in to access your listings & account console'}
+                  {isRegister ? 'Choose General Seller (Free), Business (₹500/mo), or Skilled Trade' : 'Sign in to access your listings & account console'}
                 </p>
               </div>
             </div>
@@ -127,7 +127,7 @@ export default function AuthModal({ isOpen, onClose, user, onLogin, onLogout }) 
                       <Building2 className="w-3 h-3 text-amber-400" />
                       Business Tier
                     </span>
-                    <span className="text-[10px] text-amber-200 font-extrabold block">$500/mo • Unlimited Items</span>
+                    <span className="text-[10px] text-amber-200 font-extrabold block">₹500/mo • Unlimited Items</span>
                   </button>
 
                   {/* Skilled Tradesman */}
@@ -165,7 +165,7 @@ export default function AuthModal({ isOpen, onClose, user, onLogin, onLogout }) 
 
               {isRegister && accountType === 'business' && (
                 <div>
-                  <label className="label">Business Name ($500/mo Tier) *</label>
+                  <label className="label">Business Name (₹500/mo Tier) *</label>
                   <input
                     type="text"
                     required
@@ -225,7 +225,7 @@ export default function AuthModal({ isOpen, onClose, user, onLogin, onLogout }) 
                 }`}
               >
                 {isRegister 
-                  ? (accountType === 'business' ? 'Subscribe & Register Business ($500/mo)' : 'Create Account') 
+                  ? (accountType === 'business' ? 'Subscribe & Register Business (₹500/mo)' : 'Create Account') 
                   : 'Sign In Now'}
               </button>
             </form>

@@ -119,7 +119,7 @@ export default function PostGoodsModal({
                 className="btn btn-warm text-[11px] py-1.5 px-3 font-bold"
               >
                 <Building2 className="w-3.5 h-3.5" />
-                <span>Upgrade to Business ($500/mo)</span>
+                <span>Upgrade to Business (₹500/mo)</span>
               </button>
             </div>
           </div>
@@ -180,7 +180,7 @@ export default function PostGoodsModal({
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label className="label">Selling Price ($) *</label>
+                <label className="label">Selling Price (₹) *</label>
                 <input
                   type="number"
                   required
@@ -192,7 +192,7 @@ export default function PostGoodsModal({
               </div>
 
               <div>
-                <label className="label">Original Price ($)</label>
+                <label className="label">Original Price (₹)</label>
                 <input
                   type="number"
                   placeholder="95"

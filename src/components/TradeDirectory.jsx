@@ -5,7 +5,7 @@ import {
   MapPin, 
   CheckCircle2, 
   Clock, 
-  DollarSign, 
+  IndianRupee, 
   MessageSquare, 
   Eye, 
   UserCheck,
@@ -128,7 +128,7 @@ export default function TradeDirectory({
                 onChange={(e) => setMaxRate(Number(e.target.value))}
                 className="w-24 accent-cyan-400 cursor-pointer h-1.5"
               />
-              <span className="text-xs font-bold text-cyan-300">${maxRate}/hr</span>
+              <span className="text-xs font-bold text-cyan-300">₹{maxRate}/hr</span>
             </div>
           </div>
 
@@ -179,7 +179,7 @@ export default function TradeDirectory({
 
                     <div className="text-right">
                       <div className="text-lg font-extrabold text-white">
-                        ${pro.hourlyRate}<span className="text-xs text-gray-400 font-normal">/hr</span>
+                        ₹{pro.hourlyRate}<span className="text-xs text-gray-400 font-normal">/hr</span>
                       </div>
                       <div className="flex items-center justify-end text-xs font-bold text-amber-400">
                         <Star className="w-3.5 h-3.5 fill-amber-400 mr-1" />

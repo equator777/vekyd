@@ -50,7 +50,6 @@ export default function Navbar({
                 Market
               </span>
             </div>
-            <p className="text-[11px] text-gray-400 font-medium">Used Goods, Groceries &amp; Skilled Trades</p>
           </div>
         </div>
 

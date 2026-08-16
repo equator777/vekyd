@@ -98,7 +98,7 @@ export default function CartDrawer({
                   <h4 className="text-xs font-bold text-white truncate">{item.title}</h4>
                   <span className="text-[10px] text-cyan-400 block font-semibold">{item.sellerName}</span>
                   <div className="text-sm font-extrabold text-indigo-300 mt-1">
-                    ${item.price}
+                    ₹{item.price}
                   </div>
                 </div>
 
@@ -151,15 +151,15 @@ export default function CartDrawer({
             <div className="space-y-1.5 text-xs text-gray-300">
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span className="font-bold text-white">${subtotal}</span>
+                <span className="font-bold text-white">₹{subtotal}</span>
               </div>
               <div className="flex justify-between">
                 <span>Insured Shipping</span>
-                <span className="font-bold text-white">${shipping}</span>
+                <span className="font-bold text-white">₹{shipping}</span>
               </div>
               <div className="flex justify-between text-sm font-extrabold text-white pt-2 border-t border-white/10">
                 <span>Total</span>
-                <span className="text-indigo-400">${total}</span>
+                <span className="text-indigo-400">₹{total}</span>
               </div>
             </div>
 
@@ -173,7 +173,7 @@ export default function CartDrawer({
               ) : (
                 <>
                   <ShieldCheck className="w-4 h-4" />
-                  <span>Simulate Instant Free Checkout (${total})</span>
+                  <span>Simulate Instant Free Checkout (₹{total})</span>
                 </>
               )}
             </button>

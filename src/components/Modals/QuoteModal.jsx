@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, MessageSquare, Send, Calendar, DollarSign, CheckCircle2, Sparkles } from 'lucide-react';
+import { X, MessageSquare, Send, Calendar, IndianRupee, CheckCircle2, Sparkles } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export default function QuoteModal({ isOpen, onClose, tradesman }) {
@@ -61,7 +61,7 @@ export default function QuoteModal({ isOpen, onClose, tradesman }) {
               <div>
                 <h2 className="text-xl font-bold text-white">Request Quote from {tradesman.name}</h2>
                 <p className="text-xs text-gray-400">
-                  <span className="text-cyan-300 font-semibold">{tradesman.tradeCategory} Pro</span> • Rate: ${tradesman.hourlyRate}/hr
+                  <span className="text-cyan-300 font-semibold">{tradesman.tradeCategory} Pro</span> • Rate: ₹{tradesman.hourlyRate}/hr
                 </p>
               </div>
             </div>
@@ -83,7 +83,7 @@ export default function QuoteModal({ isOpen, onClose, tradesman }) {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="label">Estimated Budget ($)</label>
+                  <label className="label">Estimated Budget (₹)</label>
                   <input
                     type="number"
                     placeholder="e.g., 500"

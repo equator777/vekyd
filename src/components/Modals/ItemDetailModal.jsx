@@ -88,13 +88,13 @@ export default function ItemDetailModal({
 
               {/* Price */}
               <div className="flex items-baseline gap-3 mb-4">
-                <span className="text-3xl font-extrabold text-white">${item.price}</span>
+                <span className="text-3xl font-extrabold text-white">₹{item.price}</span>
                 {item.originalPrice && (
-                  <span className="text-sm text-gray-400 line-through">${item.originalPrice}</span>
+                  <span className="text-sm text-gray-400 line-through">₹{item.originalPrice}</span>
                 )}
                 {item.originalPrice && (
                   <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30">
-                    Save ${item.originalPrice - item.price}
+                    Save ₹{item.originalPrice - item.price}
                   </span>
                 )}
               </div>
@@ -133,7 +133,7 @@ export default function ItemDetailModal({
               <form onSubmit={handleMakeOffer} className="flex items-center gap-2">
                 <input
                   type="number"
-                  placeholder="Negotiate offer price ($)..."
+                  placeholder="Negotiate offer price (₹)..."
                   value={offerPrice}
                   onChange={(e) => setOfferPrice(e.target.value)}
                   className="input-field py-2 text-xs flex-1"
@@ -159,7 +159,7 @@ export default function ItemDetailModal({
                 className="btn btn-primary w-full py-3 text-sm font-bold shadow-lg"
               >
                 <ShoppingCart className="w-4 h-4" />
-                <span>Add to Cart &amp; Buy Now (${item.price})</span>
+                <span>Add to Cart &amp; Buy Now (₹{item.price})</span>
               </button>
 
             </div>

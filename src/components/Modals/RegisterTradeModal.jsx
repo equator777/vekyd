@@ -124,7 +124,7 @@ export default function RegisterTradeModal({ isOpen, onClose, onRegisterTrade })
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="label">Hourly Rate ($/hr) *</label>
+              <label className="label">Hourly Rate (₹/hr) *</label>
               <input
                 type="number"
                 required

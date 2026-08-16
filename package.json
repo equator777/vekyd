@@ -2,10 +2,10 @@
   "name": "vekyd",
   "private": true,
   "version": "1.0.0",
-  "homepage": "https://equator777.github.io/vekyd",
+  "homepage": "https://vekyd.netlify.app/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/equator777/vekyd.git"
+    "url": "https://github.com/vekyd/vekyd.git"
   },
   "type": "module",
   "scripts": {

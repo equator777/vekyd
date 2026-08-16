@@ -20,7 +20,7 @@ export default function Footer({ setSelectedTrade, setActiveTab }) {
               <span className="font-extrabold text-xl text-white tracking-tight">Vekyd</span>
             </div>
             <p className="text-xs text-gray-400 leading-relaxed mb-4">
-              Vekyd is the premier dynamic platform for buying and selling pre-owned goods, groceries, &amp; gear while connecting with certified trade specialists.
+              Vekyd is a dynamic marketplace for buying, selling goods, and hiring certified trade specialists.
             </p>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[11px] font-bold">
               <Globe className="w-3.5 h-3.5" />

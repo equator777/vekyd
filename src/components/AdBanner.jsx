@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sparkles, ShieldCheck, ExternalLink, DollarSign, Tag, TrendingUp } from 'lucide-react';
+import { Sparkles, ShieldCheck, ExternalLink, IndianRupee, Tag, TrendingUp } from 'lucide-react';
 
 export default function AdBanner({ ads, onAdClick, openRegisterBusiness }) {
   const [activeAdIndex, setActiveAdIndex] = useState(0);
@@ -79,8 +79,8 @@ export default function AdBanner({ ads, onAdClick, openRegisterBusiness }) {
                 onClick={openRegisterBusiness}
                 className="btn bg-cyan-600/30 hover:bg-cyan-600 text-cyan-200 hover:text-white border border-cyan-400/40 text-[11px] font-bold py-2 px-4 rounded-full flex items-center justify-center gap-1.5 transition-all"
               >
-                <DollarSign className="w-3.5 h-3.5 text-amber-400" />
-                <span>Advertise Your Business ($500/mo)</span>
+                <IndianRupee className="w-3.5 h-3.5 text-amber-400" />
+                <span>Advertise Your Business (₹500/mo)</span>
               </button>
 
             </div>
