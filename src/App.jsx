@@ -15,6 +15,7 @@ import ItemDetailModal from './components/Modals/ItemDetailModal';
 import TradeDetailModal from './components/Modals/TradeDetailModal';
 import QuoteModal from './components/Modals/QuoteModal';
 import AuthModal from './components/Modals/AuthModal';
+import SearchResultsModal from './components/Modals/SearchResultsModal';
 import AdminPanel from './components/Admin/AdminPanel';
 import AdminPasswordModal from './components/Modals/AdminPasswordModal';
 import CartDrawer from './components/CartDrawer';
@@ -481,6 +482,16 @@ export default function App() {
         onUpdateQuantity={handleUpdateCartQuantity}
         onRemoveItem={handleRemoveCartItem}
         onClearCart={() => setCartItems([])}
+      />
+
+      <SearchResultsModal
+        isOpen={Boolean(searchQuery && searchQuery.trim() !== '')}
+        onClose={() => setSearchQuery('')}
+        searchQuery={searchQuery}
+        goods={goods}
+        tradesmen={tradesmen}
+        onSelectItem={(item) => setSelectedItemForDetail(item)}
+        onSelectTradesman={(pro) => setSelectedTradesmanForDetail(pro)}
       />
 
       {/* Floating Mobile Bottom Dock */}
