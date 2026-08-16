@@ -1,24 +1,87 @@
 {
-  "TRADE_CATEGORIES": [
-    { "id": "all", "name": "All Trades", "icon": "Wrench", "count": "120+" },
-    { "id": "craftsman", "name": "Craftsman", "icon": "Hammer", "count": "24" },
-    { "id": "welder", "name": "Welder", "icon": "Flame", "count": "18" },
-    { "id": "electrician", "name": "Electrician", "icon": "Zap", "count": "32" },
-    { "id": "plumber", "name": "Plumber", "icon": "Droplets", "count": "29" },
-    { "id": "mason", "name": "Mason", "icon": "Boxes", "count": "15" },
-    { "id": "carpenter", "name": "Carpenter", "icon": "Ruler", "count": "22" },
-    { "id": "painter", "name": "Painter", "icon": "Paintbrush", "count": "20" },
-    { "id": "hvac", "name": "HVAC Tech", "icon": "Wind", "count": "16" },
-    { "id": "landscaper", "name": "Landscaper", "icon": "Trees", "count": "19" }
+  "updatedAt": "2026-08-16T12:45:52.659Z",
+  "users": [
+    {
+      "id": "u-admin",
+      "name": "Site Admin",
+      "email": "admin@vekyd.com",
+      "userType": "admin",
+      "role": "Platform Owner",
+      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200",
+      "subscriptionExpiresAt": null,
+      "registeredDate": "2026-01-01"
+    }
   ],
-  "GOODS_CATEGORIES": [
-    { "id": "all", "name": "All Products", "icon": "Grid" },
-    { "id": "groceries", "name": "Groceries & Pantry", "icon": "Apple" },
-    { "id": "tools", "name": "Power & Hand Tools", "icon": "Wrench" },
-    { "id": "electronics", "name": "Electronics & Tech", "icon": "Laptop" },
-    { "id": "furniture", "name": "Furniture & Decor", "icon": "Armchair" },
-    { "id": "vehicles", "name": "Bikes & Vehicles", "icon": "Bike" },
-    { "id": "collectibles", "name": "Vintage & Collectibles", "icon": "Sparkles" },
-    { "id": "garden", "name": "Home & Outdoor", "icon": "Home" }
+  "goods": [
+    {
+      "id": "g-1786883515123",
+      "title": "Dr. Daga's Master V3+ Ortho Massage Bed",
+      "price": 9500,
+      "originalPrice": 11400,
+      "category": "electronics",
+      "condition": "Fair",
+      "image": "https://ibb.co/CKJDM6ds",
+      "sellerId": "admin-1",
+      "sellerName": "Enoch",
+      "sellerType": "business",
+      "sellerContact": "8485883994",
+      "location": "United States",
+      "description": "Dr. Daga's Master V3+ Orthopedic Massage Bed with different settings for neck and spine massage, used especially for patients with back and neck pain and  hip pain.  Very useful for elderly peoples, sports person",
+      "createdAt": "2026-08-16T12:31:55.123Z",
+      "expiresAt": 1789475515123
+    },
+    {
+      "id": "g-4",
+      "title": "Apple MacBook Pro 14\" M1 Pro (16GB RAM / 512GB SSD)",
+      "category": "electronics",
+      "price": 890,
+      "originalPrice": 1999,
+      "condition": "Like New",
+      "location": "Seattle, WA",
+      "sellerName": "David Chen",
+      "sellerId": "u-gen-4",
+      "sellerType": "general",
+      "sellerRole": "General Seller",
+      "sellerRating": 4.85,
+      "sellerAvatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200",
+      "image": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&q=80&w=800",
+      "description": "Space Gray finish, low battery cycle count (92%). Used primarily indoors for blueprint review and schematics. Pristine Liquid Retina XDR screen with original MagSafe cable and box.",
+      "postedDate": "Just now",
+      "createdAt": 1786796133132,
+      "expiresAt": 1789388133132,
+      "specifications": [
+        "Apple M1 Pro 8-Core CPU",
+        "16GB Unified Memory",
+        "512GB NVMe SSD",
+        "Liquid Retina XDR Display"
+      ],
+      "featured": false
+    }
+  ],
+  "ads": [
+    {
+      "id": "ad-1",
+      "title": "Apex Industrial Supply Co. - Commercial Power Tools & Groceries",
+      "subtitle": "Official Business Sponsor • 15% Off Heavy Duty Gear & Bulk Pantry Deliveries",
+      "image": "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&q=80&w=1200",
+      "sponsorName": "Apex Industrial Supply Co.",
+      "sponsorTier": "Verified Business (₹500/mo)",
+      "commissionTag": "Platform Commission Partner",
+      "ctaText": "Explore Business Shop",
+      "discountCode": "APEX15",
+      "clicks": 142
+    },
+    {
+      "id": "ad-2",
+      "title": "Rostova Custom Woodworking & Resin Furniture Studio",
+      "subtitle": "Featured Business Sponsor • Handcrafted Timber Tables & Architectural Decor",
+      "image": "https://images.unsplash.com/photo-1615066390971-03e4e1c36ddf?auto=format&fit=crop&q=80&w=1200",
+      "sponsorName": "Rostova Artisan Crafts",
+      "sponsorTier": "Verified Business (₹500/mo)",
+      "commissionTag": "Commission Earnings Partner",
+      "ctaText": "View Custom Designs",
+      "discountCode": "ROSTOVA10",
+      "clicks": 98
+    }
   ]
 }
