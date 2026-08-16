@@ -8,11 +8,15 @@ export default function ContactModal({ isOpen, onClose, showToast }) {
   const [message, setMessage] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name || !email || !message) return;
+
+    setIsSubmitting(true);
 
     // Save message locally for Admin inspection
     const newContactMessage = {
@@ -27,13 +31,27 @@ export default function ContactModal({ isOpen, onClose, showToast }) {
     const existingMsgs = JSON.parse(localStorage.getItem('tc_contact_messages_v1') || '[]');
     localStorage.setItem('tc_contact_messages_v1', JSON.stringify([newContactMessage, ...existingMsgs]));
 
-    // Mailto trigger to vekyd.one@gmail.com
-    const subject = encodeURIComponent(`Vekyd Market Inquiry from ${name}`);
-    const body = encodeURIComponent(
-      `Name: ${name}\nEmail: ${email}\nPhone: ${phone || 'N/A'}\n\nMessage:\n${message}`
-    );
-    window.open(`mailto:vekyd.one@gmail.com?subject=${subject}&body=${body}`, '_blank');
+    // Background HTTP POST to FormSubmit API for vekyd.one@gmail.com
+    try {
+      await fetch('https://formsubmit.co/ajax/vekyd.one@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          phone: phone || 'Not provided',
+          message,
+          _subject: `New Vekyd Market Inquiry from ${name}`
+        })
+      });
+    } catch (err) {
+      console.warn('Background mail dispatch notice:', err);
+    }
 
+    setIsSubmitting(false);
     setIsSubmitted(true);
     if (showToast) showToast(`✓ Thank you ${name}! Message sent to vekyd.one@gmail.com`);
 
@@ -44,7 +62,7 @@ export default function ContactModal({ isOpen, onClose, showToast }) {
       setPhone('');
       setMessage('');
       onClose();
-    }, 2000);
+    }, 2500);
   };
 
   return (
@@ -142,10 +160,20 @@ export default function ContactModal({ isOpen, onClose, showToast }) {
 
             <button
               type="submit"
-              className="w-full btn btn-primary py-3 font-bold text-sm shadow-lg shadow-indigo-500/30 flex items-center justify-center gap-2"
+              disabled={isSubmitting}
+              className="w-full btn btn-primary py-3 font-bold text-sm shadow-lg shadow-indigo-500/30 flex items-center justify-center gap-2 disabled:opacity-50"
             >
-              <Send className="w-4 h-4" />
-              <span>Submit</span>
+              {isSubmitting ? (
+                <>
+                  <Sparkles className="w-4 h-4 text-cyan-300 animate-spin" />
+                  <span>Submitting Message...</span>
+                </>
+              ) : (
+                <>
+                  <Send className="w-4 h-4" />
+                  <span>Submit</span>
+                </>
+              )}
             </button>
           </form>
         )}

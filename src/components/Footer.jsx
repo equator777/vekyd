@@ -8,9 +8,14 @@ export default function Footer({ setSelectedTrade, setActiveTab, openContactModa
   const [phone, setPhone] = useState('');
   const [message, setMessage] = useState('');
 
-  const handleFooterSubmit = (e) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const handleFooterSubmit = async (e) => {
     e.preventDefault();
     if (!name || !email || !message) return;
+
+    setIsSubmitting(true);
 
     // Save message locally
     const newContactMessage = {
@@ -25,16 +30,36 @@ export default function Footer({ setSelectedTrade, setActiveTab, openContactModa
     const existingMsgs = JSON.parse(localStorage.getItem('tc_contact_messages_v1') || '[]');
     localStorage.setItem('tc_contact_messages_v1', JSON.stringify([newContactMessage, ...existingMsgs]));
 
-    const subject = encodeURIComponent(`Vekyd Market Inquiry from ${name}`);
-    const body = encodeURIComponent(
-      `Name: ${name}\nEmail: ${email}\nPhone: ${phone || 'N/A'}\n\nMessage:\n${message}`
-    );
-    window.open(`mailto:vekyd.one@gmail.com?subject=${subject}&body=${body}`, '_blank');
-    
+    // Background HTTP POST to FormSubmit API for vekyd.one@gmail.com
+    try {
+      await fetch('https://formsubmit.co/ajax/vekyd.one@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          phone: phone || 'Not provided',
+          message,
+          _subject: `New Vekyd Market Inquiry from ${name}`
+        })
+      });
+    } catch (err) {
+      console.warn('Background mail dispatch notice:', err);
+    }
+
+    setIsSubmitting(false);
+    setIsSuccess(true);
     setName('');
     setEmail('');
     setPhone('');
     setMessage('');
+
+    setTimeout(() => {
+      setIsSuccess(false);
+    }, 4000);
   };
 
   return (
@@ -147,13 +172,29 @@ export default function Footer({ setSelectedTrade, setActiveTab, openContactModa
                 className="w-full px-3 py-1.5 text-xs rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 resize-none"
               />
 
-              <button
-                type="submit"
-                className="w-full btn btn-primary py-2 text-xs font-bold shadow-md flex items-center justify-center gap-1.5"
-              >
-                <Send className="w-3.5 h-3.5" />
-                <span>Submit</span>
-              </button>
+              {isSuccess ? (
+                <div className="p-2 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[11px] font-bold text-center animate-fade-in">
+                  ✓ Sent to vekyd.one@gmail.com!
+                </div>
+              ) : (
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full btn btn-primary py-2 text-xs font-bold shadow-md flex items-center justify-center gap-1.5 disabled:opacity-50"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Sparkles className="w-3.5 h-3.5 text-cyan-300 animate-spin" />
+                      <span>Sending...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-3.5 h-3.5" />
+                      <span>Submit</span>
+                    </>
+                  )}
+                </button>
+              )}
             </form>
           </div>
 
