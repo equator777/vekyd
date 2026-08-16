@@ -108,14 +108,15 @@ export default function RegisterTradeModal({ isOpen, onClose, onRegisterTrade, t
               <select
                 value={tradeCategory}
                 onChange={(e) => setTradeCategory(e.target.value)}
-                className="input-field bg-slate-900 text-white font-bold border border-white/20 focus:border-cyan-400"
+                className="input-field font-bold border border-white/20 focus:border-cyan-400"
+                style={{ backgroundColor: '#0b0f19', color: '#ffffff', colorScheme: 'dark' }}
               >
                 {categoriesList.filter(c => c.id !== 'all').map((cat) => (
-                  <option key={cat.id} value={cat.name}>
+                  <option key={cat.id} value={cat.name} style={{ backgroundColor: '#0b0f19', color: '#ffffff' }}>
                     {cat.name}
                   </option>
                 ))}
-                <option value="other" className="bg-slate-900 text-amber-300 font-bold py-1">
+                <option value="other" style={{ backgroundColor: '#0b0f19', color: '#fbbf24', fontWeight: 'bold' }}>
                   + Other (Register Custom Trade Category)
                 </option>
               </select>
