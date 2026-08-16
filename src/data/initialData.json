@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-16T13:07:21.438Z",
+  "updatedAt": "2026-08-16T15:15:00.000Z",
   "users": [
     {
       "id": "u-admin",
@@ -26,36 +26,16 @@
       "sellerType": "business",
       "sellerContact": "8485883994",
       "location": "United States",
-      "description": "Dr. Daga's Master V3+ Orthopedic Massage Bed for elderly, sport person, or people who are suffering from constant severe back and neck pain and hip pain. This bed massages are the pressure points and relieves your pain. very useful product. This is a used product so the price is almost 70% less.",
-      "createdAt": "2026-08-16T13:07:10.190Z",
-      "expiresAt": 1789477630190
-    },
-    {
-      "id": "g-4",
-      "title": "Apple MacBook Pro 14\" M1 Pro (16GB RAM / 512GB SSD)",
-      "category": "electronics",
-      "price": 890,
-      "originalPrice": 1999,
-      "condition": "Like New",
-      "location": "Seattle, WA",
-      "sellerName": "David Chen",
-      "sellerId": "u-gen-4",
-      "sellerType": "general",
-      "sellerRole": "General Seller",
-      "sellerRating": 4.85,
-      "sellerAvatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200",
-      "image": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&q=80&w=800",
-      "description": "Space Gray finish, low battery cycle count (92%). Used primarily indoors for blueprint review and schematics. Pristine Liquid Retina XDR screen with original MagSafe cable and box.",
-      "postedDate": "Just now",
-      "createdAt": 1786796133132,
-      "expiresAt": 1789388133132,
+      "description": "Dr. Daga's Master V3+ Orthopedic Massage Bed for elderly, sport person, or people who are suffering from constant severe back and neck pain and hip pain. This bed massages are the pressure points and relieves your pain. Very useful product. This is a used product so the price is almost 70% less.",
+      "createdAt": 1786885630190,
+      "expiresAt": 1789477630190,
       "specifications": [
-        "Apple M1 Pro 8-Core CPU",
-        "16GB Unified Memory",
-        "512GB NVMe SSD",
-        "Liquid Retina XDR Display"
+        "Orthopedic Spine & Neck Massager",
+        "Thermal Infrared Pressure Point Relief",
+        "Ideal for Elderly & Sports Recovery",
+        "70% Off Original Price"
       ],
-      "featured": false
+      "featured": true
     }
   ],
   "ads": [

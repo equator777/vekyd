@@ -55,53 +55,55 @@ export default function App() {
     return saved ? JSON.parse(saved) : TRADE_CATEGORIES;
   });
 
-  // Core Data Persistence with v2 keys
+  // Core Data Persistence with v3 keys
   const [users, setUsers] = useState(() => {
-    const saved = localStorage.getItem('tc_users_v2');
+    const saved = localStorage.getItem('tc_users_v3');
     return sanitizeCurrency(saved ? JSON.parse(saved) : INITIAL_USERS);
   });
 
   const [goods, setGoods] = useState(() => {
-    const saved = localStorage.getItem('tc_goods_v2');
+    const saved = localStorage.getItem('tc_goods_v3');
     return sanitizeCurrency(saved ? JSON.parse(saved) : INITIAL_GOODS);
   });
 
   const [tradesmen, setTradesmen] = useState(() => {
-    const saved = localStorage.getItem('tc_tradesmen_v2');
+    const saved = localStorage.getItem('tc_tradesmen_v3');
     return sanitizeCurrency(saved ? JSON.parse(saved) : INITIAL_TRADESMEN);
   });
 
   const [ads, setAds] = useState(() => {
-    const saved = localStorage.getItem('tc_ads_v2');
+    const saved = localStorage.getItem('tc_ads_v3');
     return sanitizeCurrency(saved ? JSON.parse(saved) : INITIAL_ADS);
   });
 
   const [favorites, setFavorites] = useState(() => {
-    const saved = localStorage.getItem('tc_favorites_v2');
-    return saved ? JSON.parse(saved) : ['g-1', 'g-biz-1'];
+    const saved = localStorage.getItem('tc_favorites_v3');
+    return saved ? JSON.parse(saved) : ['g-1786885630190'];
   });
 
   const [cartItems, setCartItems] = useState(() => {
-    const saved = localStorage.getItem('tc_cart_v2');
+    const saved = localStorage.getItem('tc_cart_v3');
     return sanitizeCurrency(saved ? JSON.parse(saved) : []);
   });
 
   const [user, setUser] = useState(() => {
-    const saved = localStorage.getItem('tc_user_v2');
+    const saved = localStorage.getItem('tc_user_v3');
     return sanitizeCurrency(saved ? JSON.parse(saved) : null);
   });
 
-  // Automatically purge legacy dollar cache
+  // Automatically purge legacy mobile cache on v3 release
   useEffect(() => {
-    const hasPurged = localStorage.getItem('vekyd_rupee_purged_v2');
+    const hasPurged = localStorage.getItem('vekyd_sync_v3');
     if (!hasPurged) {
       localStorage.removeItem('tc_users');
       localStorage.removeItem('tc_goods');
       localStorage.removeItem('tc_tradesmen');
       localStorage.removeItem('tc_ads');
-      localStorage.removeItem('tc_cart');
-      localStorage.removeItem('tc_user');
-      localStorage.setItem('vekyd_rupee_purged_v2', 'true');
+      localStorage.removeItem('tc_users_v2');
+      localStorage.removeItem('tc_goods_v2');
+      localStorage.removeItem('tc_tradesmen_v2');
+      localStorage.removeItem('tc_ads_v2');
+      localStorage.setItem('vekyd_sync_v3', 'true');
       setUsers(sanitizeCurrency(INITIAL_USERS));
       setGoods(sanitizeCurrency(INITIAL_GOODS));
       setTradesmen(sanitizeCurrency(INITIAL_TRADESMEN));
@@ -140,17 +142,17 @@ export default function App() {
     localStorage.setItem('tc_theme', theme);
   }, [theme]);
 
-  // Sync LocalStorage with v2 keys
+  // Sync LocalStorage with v3 keys
   useEffect(() => { localStorage.setItem('tc_trade_categories_v2', JSON.stringify(tradeCategories)); }, [tradeCategories]);
-  useEffect(() => { localStorage.setItem('tc_users_v2', JSON.stringify(users)); }, [users]);
-  useEffect(() => { localStorage.setItem('tc_goods_v2', JSON.stringify(goods)); }, [goods]);
-  useEffect(() => { localStorage.setItem('tc_tradesmen_v2', JSON.stringify(tradesmen)); }, [tradesmen]);
-  useEffect(() => { localStorage.setItem('tc_ads_v2', JSON.stringify(ads)); }, [ads]);
-  useEffect(() => { localStorage.setItem('tc_favorites_v2', JSON.stringify(favorites)); }, [favorites]);
-  useEffect(() => { localStorage.setItem('tc_cart_v2', JSON.stringify(cartItems)); }, [cartItems]);
+  useEffect(() => { localStorage.setItem('tc_users_v3', JSON.stringify(users)); }, [users]);
+  useEffect(() => { localStorage.setItem('tc_goods_v3', JSON.stringify(goods)); }, [goods]);
+  useEffect(() => { localStorage.setItem('tc_tradesmen_v3', JSON.stringify(tradesmen)); }, [tradesmen]);
+  useEffect(() => { localStorage.setItem('tc_ads_v3', JSON.stringify(ads)); }, [ads]);
+  useEffect(() => { localStorage.setItem('tc_favorites_v3', JSON.stringify(favorites)); }, [favorites]);
+  useEffect(() => { localStorage.setItem('tc_cart_v3', JSON.stringify(cartItems)); }, [cartItems]);
   useEffect(() => {
-    if (user) localStorage.setItem('tc_user_v2', JSON.stringify(user));
-    else localStorage.removeItem('tc_user_v2');
+    if (user) localStorage.setItem('tc_user_v3', JSON.stringify(user));
+    else localStorage.removeItem('tc_user_v3');
   }, [user]);
 
   const toggleTheme = () => {
