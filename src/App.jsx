@@ -16,6 +16,7 @@ import TradeDetailModal from './components/Modals/TradeDetailModal';
 import QuoteModal from './components/Modals/QuoteModal';
 import AuthModal from './components/Modals/AuthModal';
 import SearchResultsModal from './components/Modals/SearchResultsModal';
+import ContactModal from './components/Modals/ContactModal';
 import AdminPanel from './components/Admin/AdminPanel';
 import AdminPasswordModal from './components/Modals/AdminPasswordModal';
 import CartDrawer from './components/CartDrawer';
@@ -127,6 +128,7 @@ export default function App() {
   const [isAdminPasswordOpen, setIsAdminPasswordOpen] = useState(false);
   const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   // Global window handler for Admin Prompt
   useEffect(() => {
@@ -393,6 +395,7 @@ export default function App() {
       <Footer
         setSelectedTrade={setSelectedTrade}
         setActiveTab={setActiveTab}
+        openContactModal={() => setIsContactModalOpen(true)}
       />
 
       {/* Modals & Drawers */}
@@ -492,6 +495,12 @@ export default function App() {
         tradesmen={tradesmen}
         onSelectItem={(item) => setSelectedItemForDetail(item)}
         onSelectTradesman={(pro) => setSelectedTradesmanForDetail(pro)}
+      />
+
+      <ContactModal
+        isOpen={isContactModalOpen}
+        onClose={() => setIsContactModalOpen(false)}
+        showToast={showToast}
       />
 
       {/* Floating Mobile Bottom Dock */}
