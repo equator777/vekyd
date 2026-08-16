@@ -152,7 +152,7 @@ export default function Footer({ setSelectedTrade, setActiveTab, openContactModa
                 className="w-full btn btn-primary py-2 text-xs font-bold shadow-md flex items-center justify-center gap-1.5"
               >
                 <Send className="w-3.5 h-3.5" />
-                <span>Submit to vekyd.one@gmail.com</span>
+                <span>Submit</span>
               </button>
             </form>
           </div>

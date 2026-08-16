@@ -145,7 +145,7 @@ export default function ContactModal({ isOpen, onClose, showToast }) {
               className="w-full btn btn-primary py-3 font-bold text-sm shadow-lg shadow-indigo-500/30 flex items-center justify-center gap-2"
             >
               <Send className="w-4 h-4" />
-              <span>Submit &amp; Mail to vekyd.one@gmail.com</span>
+              <span>Submit</span>
             </button>
           </form>
         )}
