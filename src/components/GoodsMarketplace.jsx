@@ -27,7 +27,7 @@ export default function GoodsMarketplace({
 }) {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedCondition, setSelectedCondition] = useState('all');
-  const [maxPrice, setMaxPrice] = useState(2500);
+  const [maxPrice, setMaxPrice] = useState(50000);
   const [sortBy, setSortBy] = useState('newest');
 
   // Multi-filter matching logic
@@ -58,7 +58,7 @@ export default function GoodsMarketplace({
   const resetFilters = () => {
     setSelectedCategory('all');
     setSelectedCondition('all');
-    setMaxPrice(2500);
+    setMaxPrice(50000);
     setSortBy('newest');
   };
 
@@ -144,9 +144,9 @@ export default function GoodsMarketplace({
               </div>
               <input
                 type="range"
-                min="10"
-                max="2500"
-                step="25"
+                min="50"
+                max="50000"
+                step="250"
                 value={maxPrice}
                 onChange={(e) => setMaxPrice(Number(e.target.value))}
                 className="w-full accent-indigo-500 bg-white/10 rounded-lg cursor-pointer h-1.5"
