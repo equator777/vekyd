@@ -6,6 +6,7 @@ import TradeCategoryBar from './components/TradeCategoryBar';
 import GoodsMarketplace from './components/GoodsMarketplace';
 import TradeDirectory from './components/TradeDirectory';
 import Footer from './components/Footer';
+import MobileBottomNav from './components/MobileBottomNav';
 
 // Modals & Control Consoles
 import PostGoodsModal from './components/Modals/PostGoodsModal';
@@ -261,7 +262,7 @@ export default function App() {
   const currentUserActiveGoodsCount = user ? goods.filter(g => g.sellerId === user.id).length : 0;
 
   return (
-    <div className="min-h-screen flex flex-col relative bg-slate-950 text-white selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen flex flex-col relative bg-slate-950 text-white selection:bg-indigo-500 selection:text-white pb-20 md:pb-0">
       
       {/* Toast Notification Floating */}
       {toastMessage && (
@@ -430,6 +431,25 @@ export default function App() {
         onUpdateQuantity={handleUpdateCartQuantity}
         onRemoveItem={handleRemoveCartItem}
         onClearCart={() => setCartItems([])}
+      />
+
+      {/* Floating Mobile Bottom Dock */}
+      <MobileBottomNav
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        cartCount={cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0)}
+        setIsCartOpen={setIsCartOpen}
+        openPostGoodsModal={() => {
+          if (user && user.userType === 'general' && currentUserActiveGoodsCount >= 1) {
+            showToast('⚠️ General Tier Limit Reached (1 Item Max). Upgrade to Business!');
+            setIsAuthModalOpen(true);
+          } else {
+            setIsPostGoodsOpen(true);
+          }
+        }}
+        openRegisterTradeModal={() => setIsRegisterTradeOpen(true)}
+        openAuthModal={() => setIsAuthModalOpen(true)}
+        user={user}
       />
 
     </div>

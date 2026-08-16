@@ -172,6 +172,20 @@ export default function Navbar({
 
         </div>
 
+        {/* Mobile Search Bar Row */}
+        <div className="w-full md:hidden pt-1">
+          <div className="relative w-full">
+            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input
+              type="text"
+              placeholder={activeTab === 'goods' ? "Search tools, groceries, tech..." : "Search welders, electricians, plumbers..."}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-9 pr-4 py-1.5 text-xs rounded-full bg-slate-950 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-indigo-500 transition-all"
+            />
+          </div>
+        </div>
+
       </div>
     </header>
   );
