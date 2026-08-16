@@ -13,7 +13,8 @@ import {
   Search,
   Hammer,
   ShieldCheck,
-  Building2
+  Building2,
+  X
 } from 'lucide-react';
 
 export default function Navbar({
@@ -84,11 +85,20 @@ export default function Navbar({
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input
             type="text"
-            placeholder={activeTab === 'goods' ? "Search tools, groceries, tech, furniture..." : "Search welders, electricians, plumbers..."}
+            placeholder={activeTab === 'goods' ? "Search products, massage bed, tools, tech..." : "Search welders, electricians, plumbers..."}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-1.5 text-xs sm:text-sm rounded-full bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+            className="w-full pl-9 pr-8 py-1.5 text-xs sm:text-sm rounded-full bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
           />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-0.5 rounded-full hover:bg-white/20 text-gray-400 hover:text-white transition-colors"
+              title="Clear search"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          )}
         </div>
 
         {/* Actions & User Nav */}
@@ -178,11 +188,20 @@ export default function Navbar({
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
               type="text"
-              placeholder={activeTab === 'goods' ? "Search tools, groceries, tech..." : "Search welders, electricians, plumbers..."}
+              placeholder={activeTab === 'goods' ? "Search products, massage bed, tools..." : "Search welders, electricians, plumbers..."}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-1.5 text-xs rounded-full bg-slate-950 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-indigo-500 transition-all"
+              className="w-full pl-9 pr-8 py-1.5 text-xs rounded-full bg-slate-950 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-indigo-500 transition-all"
             />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-0.5 rounded-full hover:bg-white/20 text-gray-400 hover:text-white transition-colors"
+                title="Clear search"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
           </div>
         </div>
 

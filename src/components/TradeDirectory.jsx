@@ -35,24 +35,33 @@ export default function TradeDirectory({
   // Filter logic for tradesmen
   const filteredTradesmen = useMemo(() => {
     return tradesmen.filter((pro) => {
-      // Category match
+      // 1. Search match with comprehensive safe null checks
+      if (searchQuery && searchQuery.trim() !== '') {
+        const q = searchQuery.trim().toLowerCase();
+        const matchesName = pro.name ? pro.name.toLowerCase().includes(q) : false;
+        const matchesTitle = pro.title ? pro.title.toLowerCase().includes(q) : false;
+        const matchesBio = pro.bio ? pro.bio.toLowerCase().includes(q) : false;
+        const matchesTrade = pro.tradeCategory ? pro.tradeCategory.toLowerCase().includes(q) : false;
+        const matchesLocation = pro.location ? pro.location.toLowerCase().includes(q) : false;
+        const matchesSkill = Array.isArray(pro.skills) 
+          ? pro.skills.some(s => typeof s === 'string' && s.toLowerCase().includes(q)) 
+          : false;
+
+        if (!matchesName && !matchesTitle && !matchesBio && !matchesTrade && !matchesLocation && !matchesSkill) {
+          return false;
+        }
+      }
+
+      // 2. Category match (only if selectedTrade is not 'all' AND user hasn't typed a search query)
       if (selectedTrade !== 'all' && pro.tradeCategory.toLowerCase() !== selectedTrade.toLowerCase()) {
-        return false;
+        if (!searchQuery || searchQuery.trim() === '') return false;
       }
-      // Hourly rate match
+
+      // 3. Hourly rate match
       if (pro.hourlyRate > maxRate) return false;
-      // Rating match
+      // 4. Rating match
       if (pro.rating < minRating) return false;
-      // Search match
-      if (searchQuery.trim() !== '') {
-        const q = searchQuery.toLowerCase();
-        const matchesName = pro.name.toLowerCase().includes(q);
-        const matchesTitle = pro.title.toLowerCase().includes(q);
-        const matchesBio = pro.bio.toLowerCase().includes(q);
-        const matchesTrade = pro.tradeCategory.toLowerCase().includes(q);
-        const matchesSkill = pro.skills.some(s => s.toLowerCase().includes(q));
-        if (!matchesName && !matchesTitle && !matchesBio && !matchesTrade && !matchesSkill) return false;
-      }
+
       return true;
     });
   }, [tradesmen, selectedTrade, maxRate, minRating, searchQuery]);

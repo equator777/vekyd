@@ -33,20 +33,35 @@ export default function GoodsMarketplace({
   // Multi-filter matching logic
   const filteredGoods = useMemo(() => {
     return goods.filter((item) => {
-      // Category match
-      if (selectedCategory !== 'all' && item.category !== selectedCategory) return false;
-      // Condition match
-      if (selectedCondition !== 'all' && item.condition !== selectedCondition) return false;
-      // Price match
-      if (item.price > maxPrice) return false;
-      // Search match
-      if (searchQuery.trim() !== '') {
-        const query = searchQuery.toLowerCase();
-        const matchesTitle = item.title.toLowerCase().includes(query);
-        const matchesDesc = item.description.toLowerCase().includes(query);
-        const matchesSeller = item.sellerName.toLowerCase().includes(query);
-        if (!matchesTitle && !matchesDesc && !matchesSeller) return false;
+      // 1. Search Query Matching with comprehensive safe null checks
+      if (searchQuery && searchQuery.trim() !== '') {
+        const query = searchQuery.trim().toLowerCase();
+        const matchesTitle = item.title ? item.title.toLowerCase().includes(query) : false;
+        const matchesDesc = item.description ? item.description.toLowerCase().includes(query) : false;
+        const matchesSeller = item.sellerName ? item.sellerName.toLowerCase().includes(query) : false;
+        const matchesCategory = item.category ? item.category.toLowerCase().includes(query) : false;
+        const matchesLocation = item.location ? item.location.toLowerCase().includes(query) : false;
+        const matchesCondition = item.condition ? item.condition.toLowerCase().includes(query) : false;
+        const matchesSpecs = Array.isArray(item.specifications) 
+          ? item.specifications.some(s => typeof s === 'string' && s.toLowerCase().includes(query)) 
+          : false;
+
+        if (!matchesTitle && !matchesDesc && !matchesSeller && !matchesCategory && !matchesLocation && !matchesCondition && !matchesSpecs) {
+          return false;
+        }
       }
+
+      // 2. Category match (only if selectedCategory is not 'all' AND user hasn't typed a search query)
+      if (selectedCategory !== 'all' && item.category !== selectedCategory) {
+        if (!searchQuery || searchQuery.trim() === '') return false;
+      }
+
+      // 3. Condition match
+      if (selectedCondition !== 'all' && item.condition !== selectedCondition) return false;
+
+      // 4. Price match
+      if (item.price > maxPrice) return false;
+
       return true;
     }).sort((a, b) => {
       if (sortBy === 'price-low') return a.price - b.price;
