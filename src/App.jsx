@@ -210,6 +210,11 @@ export default function App() {
     showToast('Product listing removed');
   };
 
+  const handleUpdateGoods = (updatedItem) => {
+    setGoods(prev => prev.map(g => g.id === updatedItem.id ? updatedItem : g));
+    showToast(`✓ Updated listing "${updatedItem.title}"!`);
+  };
+
   const handleRenewGoodsExpiry = (goodsId) => {
     setGoods(prev => prev.map(g => {
       if (g.id === goodsId) {
@@ -470,6 +475,7 @@ export default function App() {
         onToggleBusinessTier={handleToggleBusinessTier}
         goods={goods}
         onAddGoods={handleAddGoods}
+        onUpdateGoods={handleUpdateGoods}
         onDeleteGoods={handleDeleteGoods}
         onRenewGoodsExpiry={handleRenewGoodsExpiry}
         ads={ads}

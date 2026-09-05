@@ -22,6 +22,8 @@ import {
   Activity,
   Upload,
   Download,
+  Pencil,
+  Save,
   AlertCircle,
   TrendingUp,
   Tag,
@@ -39,6 +41,7 @@ export default function AdminPanel({
   onToggleBusinessTier,
   goods,
   onAddGoods,
+  onUpdateGoods,
   onDeleteGoods,
   onRenewGoodsExpiry,
   ads,
@@ -81,6 +84,8 @@ export default function AdminPanel({
   const [prodContact, setProdContact] = useState('');
   const [prodLocation, setProdLocation] = useState('');
   const [prodDesc, setProdDesc] = useState('');
+  const [editingGoodsId, setEditingGoodsId] = useState(null);
+  const [editGoodsForm, setEditGoodsForm] = useState(null);
 
   // New Ad Banner Form State
   const [isAddAdOpen, setIsAddAdOpen] = useState(false);
@@ -209,6 +214,39 @@ export default function AdminPanel({
     setProdContact('');
     setProdLocation('');
     setProdDesc('');
+  };
+
+  const startEditingGoods = (item) => {
+    setEditingGoodsId(item.id);
+    setEditGoodsForm({
+      title: item.title || '',
+      price: item.price ?? '',
+      category: item.category || 'tools',
+      condition: item.condition || 'Like New',
+      location: item.location || '',
+      description: item.description || '',
+      image: item.image || ''
+    });
+  };
+
+  const cancelEditingGoods = () => {
+    setEditingGoodsId(null);
+    setEditGoodsForm(null);
+  };
+
+  const saveEditingGoods = (item) => {
+    if (!editGoodsForm || !editGoodsForm.title.trim() || editGoodsForm.price === '') return;
+
+    onUpdateGoods({
+      ...item,
+      ...editGoodsForm,
+      title: editGoodsForm.title.trim(),
+      price: Number(editGoodsForm.price),
+      location: editGoodsForm.location.trim() || 'Local Area',
+      description: editGoodsForm.description.trim(),
+      image: editGoodsForm.image.trim() || item.image
+    });
+    cancelEditingGoods();
   };
 
   const handleCreateAd = (e) => {
@@ -736,53 +774,146 @@ export default function AdminPanel({
                     const isExpired = daysLeft <= 0;
 
                     return (
-                      <tr key={item.id} className="hover:bg-white/5 transition-colors">
-                        <td className="p-3">
-                          <div className="flex items-center gap-3">
-                            <img src={item.image} alt={item.title} className="w-10 h-10 rounded-xl object-cover" />
-                            <div className="max-w-xs">
-                              <span className="font-bold text-white block truncate">{item.title}</span>
-                              <span className="text-[10px] text-indigo-400 uppercase font-semibold">{item.category}</span>
+                      <React.Fragment key={item.id}>
+                        <tr className="hover:bg-white/5 transition-colors">
+                          <td className="p-3">
+                            <div className="flex items-center gap-3">
+                              <img src={item.image} alt={item.title} className="w-10 h-10 rounded-xl object-cover" />
+                              <div className="max-w-xs">
+                                <span className="font-bold text-white block truncate">{item.title}</span>
+                                <span className="text-[10px] text-indigo-400 uppercase font-semibold">{item.category}</span>
+                              </div>
                             </div>
-                          </div>
-                        </td>
-                        <td className="p-3">
-                          <span className="font-semibold text-white block">{item.sellerName}</span>
-                          <span className={`text-[10px] ${item.sellerType === 'business' ? 'text-amber-400 font-bold' : 'text-gray-400'}`}>
-                            {item.sellerType === 'business' ? 'Verified Business' : 'General Seller'}
-                          </span>
-                        </td>
-                        <td className="p-3 font-extrabold text-white">₹{item.price}</td>
-                        <td className="p-3">
-                          {isExpired ? (
-                            <span className="badge badge-rose flex items-center gap-1">
-                              <AlertCircle className="w-3 h-3" />
-                              EXPIRED
+                          </td>
+                          <td className="p-3">
+                            <span className="font-semibold text-white block">{item.sellerName}</span>
+                            <span className={`text-[10px] ${item.sellerType === 'business' ? 'text-amber-400 font-bold' : 'text-gray-400'}`}>
+                              {item.sellerType === 'business' ? 'Verified Business' : 'General Seller'}
                             </span>
-                          ) : (
-                            <span className="badge badge-cyan">
-                              Expires in {daysLeft} Days
-                            </span>
-                          )}
-                        </td>
-                        <td className="p-3 text-right space-x-2">
-                          <button
-                            onClick={() => onRenewGoodsExpiry(item.id)}
-                            className="px-2.5 py-1 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/30 font-bold transition-all"
-                            title="Reset 30-Day Timer"
-                          >
-                            <RotateCcw className="w-3 h-3 inline mr-1" />
-                            +30 Days
-                          </button>
-                          <button
-                            onClick={() => onDeleteGoods(item.id)}
-                            className="p-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30 transition-all"
-                            title="Remove Listing"
-                          >
-                            <Trash2 className="w-3.5 h-3.5" />
-                          </button>
-                        </td>
-                      </tr>
+                          </td>
+                          <td className="p-3 font-extrabold text-white">₹{item.price}</td>
+                          <td className="p-3">
+                            {isExpired ? (
+                              <span className="badge badge-rose flex items-center gap-1">
+                                <AlertCircle className="w-3 h-3" />
+                                EXPIRED
+                              </span>
+                            ) : (
+                              <span className="badge badge-cyan">
+                                Expires in {daysLeft} Days
+                              </span>
+                            )}
+                          </td>
+                          <td className="p-3 text-right space-x-2">
+                            <button
+                              onClick={() => startEditingGoods(item)}
+                              className="p-1.5 rounded-lg bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-300 border border-indigo-500/30 transition-all"
+                              title="Edit Listing"
+                            >
+                              <Pencil className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              onClick={() => onRenewGoodsExpiry(item.id)}
+                              className="px-2.5 py-1 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/30 font-bold transition-all"
+                              title="Reset 30-Day Timer"
+                            >
+                              <RotateCcw className="w-3 h-3 inline mr-1" />
+                              +30 Days
+                            </button>
+                            <button
+                              onClick={() => onDeleteGoods(item.id)}
+                              className="p-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30 transition-all"
+                              title="Remove Listing"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </td>
+                        </tr>
+                        {editingGoodsId === item.id && editGoodsForm && (
+                          <tr>
+                            <td colSpan="5" className="p-4 bg-indigo-500/5 border-y border-indigo-500/20">
+                              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                                <div>
+                                  <label className="label text-xs">Product Title</label>
+                                  <input
+                                    value={editGoodsForm.title}
+                                    onChange={(e) => setEditGoodsForm({ ...editGoodsForm, title: e.target.value })}
+                                    className="input-field text-xs"
+                                  />
+                                </div>
+                                <div>
+                                  <label className="label text-xs">Price (₹)</label>
+                                  <input
+                                    type="number"
+                                    value={editGoodsForm.price}
+                                    onChange={(e) => setEditGoodsForm({ ...editGoodsForm, price: e.target.value })}
+                                    className="input-field text-xs"
+                                  />
+                                </div>
+                                <div>
+                                  <label className="label text-xs">Location</label>
+                                  <input
+                                    value={editGoodsForm.location}
+                                    onChange={(e) => setEditGoodsForm({ ...editGoodsForm, location: e.target.value })}
+                                    placeholder="e.g., Nashik, MH"
+                                    className="input-field text-xs"
+                                  />
+                                </div>
+                                <div>
+                                  <label className="label text-xs">Category</label>
+                                  <select
+                                    value={editGoodsForm.category}
+                                    onChange={(e) => setEditGoodsForm({ ...editGoodsForm, category: e.target.value })}
+                                    className="input-field text-xs bg-slate-950 text-white font-bold"
+                                  >
+                                    {GOODS_CATEGORIES.filter(c => c.id !== 'all').map((cat) => (
+                                      <option key={cat.id} value={cat.id}>{cat.name}</option>
+                                    ))}
+                                  </select>
+                                </div>
+                                <div>
+                                  <label className="label text-xs">Condition</label>
+                                  <select
+                                    value={editGoodsForm.condition}
+                                    onChange={(e) => setEditGoodsForm({ ...editGoodsForm, condition: e.target.value })}
+                                    className="input-field text-xs bg-slate-950 text-white font-bold"
+                                  >
+                                    <option value="Brand New / Fresh">Brand New / Fresh Pantry</option>
+                                    <option value="Like New">Like New</option>
+                                    <option value="Excellent">Excellent</option>
+                                    <option value="Good">Good</option>
+                                    <option value="Fair">Fair</option>
+                                  </select>
+                                </div>
+                                <div>
+                                  <label className="label text-xs">Image URL</label>
+                                  <input
+                                    value={editGoodsForm.image}
+                                    onChange={(e) => setEditGoodsForm({ ...editGoodsForm, image: e.target.value })}
+                                    className="input-field text-xs"
+                                  />
+                                </div>
+                                <div className="sm:col-span-2 lg:col-span-3">
+                                  <label className="label text-xs">Description</label>
+                                  <textarea
+                                    rows={2}
+                                    value={editGoodsForm.description}
+                                    onChange={(e) => setEditGoodsForm({ ...editGoodsForm, description: e.target.value })}
+                                    className="input-field text-xs"
+                                  />
+                                </div>
+                              </div>
+                              <div className="flex justify-end gap-2 mt-3">
+                                <button onClick={cancelEditingGoods} className="btn btn-secondary text-xs py-1.5">Cancel</button>
+                                <button onClick={() => saveEditingGoods(item)} className="btn btn-primary text-xs py-1.5 font-bold">
+                                  <Save className="w-3.5 h-3.5" />
+                                  Save Changes
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        )}
+                      </React.Fragment>
                     );
                   })}
                 </tbody>
