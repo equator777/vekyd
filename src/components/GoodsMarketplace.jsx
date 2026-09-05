@@ -27,7 +27,7 @@ export default function GoodsMarketplace({
 }) {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedCondition, setSelectedCondition] = useState('all');
-  const [maxPrice, setMaxPrice] = useState(50000);
+  const [maxPrice, setMaxPrice] = useState(1000000);
   const [sortBy, setSortBy] = useState('newest');
 
   // Multi-filter matching logic
@@ -73,7 +73,7 @@ export default function GoodsMarketplace({
   const resetFilters = () => {
     setSelectedCategory('all');
     setSelectedCondition('all');
-    setMaxPrice(50000);
+    setMaxPrice(1000000);
     setSortBy('newest');
   };
 
@@ -155,13 +155,13 @@ export default function GoodsMarketplace({
             <div>
               <div className="flex justify-between items-center mb-1">
                 <label className="label text-xs mb-0">Max Price</label>
-                <span className="text-xs font-bold text-indigo-400">₹{maxPrice}</span>
+                <span className="text-xs font-bold text-indigo-400">₹{maxPrice.toLocaleString('en-IN')}</span>
               </div>
               <input
                 type="range"
                 min="50"
-                max="50000"
-                step="250"
+                max="1000000"
+                step="1000"
                 value={maxPrice}
                 onChange={(e) => setMaxPrice(Number(e.target.value))}
                 className="w-full accent-indigo-500 bg-white/10 rounded-lg cursor-pointer h-1.5"
