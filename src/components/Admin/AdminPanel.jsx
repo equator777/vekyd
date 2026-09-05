@@ -53,7 +53,10 @@ export default function AdminPanel({
   const [userSearch, setUserSearch] = useState('');
   
   // GitHub Settings State (persisted in localStorage)
-  const [ghOwner, setGhOwner] = useState(() => localStorage.getItem('vekyd_gh_owner') || 'vekyd-org');
+  const [ghOwner, setGhOwner] = useState(() => {
+    const savedOwner = localStorage.getItem('vekyd_gh_owner');
+    return !savedOwner || savedOwner === 'vekyd-org' ? 'equator777' : savedOwner;
+  });
   const [ghRepo, setGhRepo] = useState(() => localStorage.getItem('vekyd_gh_repo') || 'vekyd');
   const [ghToken, setGhToken] = useState(() => localStorage.getItem('vekyd_gh_token') || '');
   
