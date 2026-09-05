@@ -191,7 +191,7 @@ export default function AdminPanel({
       sellerName: prodSeller || 'Vekyd Verified Seller',
       sellerType: 'business',
       sellerContact: prodContact || 'sales@vekyd.com',
-      location: prodLocation || 'United States',
+      location: prodLocation.trim() || 'Local Area',
       description: prodDesc || 'Product added via Vekyd Admin Control Console.',
       createdAt: new Date().toISOString(),
       expiresAt: Date.now() + 30 * 24 * 60 * 60 * 1000

@@ -14,7 +14,7 @@ export default function PostGoodsModal({
   const [price, setPrice] = useState('');
   const [originalPrice, setOriginalPrice] = useState('');
   const [condition, setCondition] = useState('Like New');
-  const [location, setLocation] = useState('Austin, TX');
+  const [location, setLocation] = useState('');
   const [description, setDescription] = useState('');
   const [imageUrl, setImageUrl] = useState('');
 
@@ -38,7 +38,7 @@ export default function PostGoodsModal({
       price: Number(price),
       originalPrice: originalPrice ? Number(originalPrice) : null,
       condition,
-      location: location || 'Local Area',
+      location: location.trim() || 'Local Area',
       sellerName: currentUser ? currentUser.name : 'Registered Member',
       sellerId: currentUser ? currentUser.id : 'u-guest',
       sellerType: currentUser ? (currentUser.userType || 'general') : 'general',
@@ -206,7 +206,7 @@ export default function PostGoodsModal({
                 <label className="label">Location</label>
                 <input
                   type="text"
-                  placeholder="Austin, TX"
+                  placeholder="e.g., Nashik MH, India"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
                   className="input-field"
