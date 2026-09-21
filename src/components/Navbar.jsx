@@ -14,7 +14,8 @@ import {
   Hammer,
   ShieldCheck,
   Building2,
-  X
+  X,
+  Upload
 } from 'lucide-react';
 import { handleImageError, DEFAULT_AVATAR_FALLBACK } from '../utils/imageUtils';
 

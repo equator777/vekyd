@@ -432,6 +432,7 @@ export default function App() {
             onToggleFavorite={handleToggleFavorite}
             searchQuery={searchQuery}
             openPostGoodsModal={() => setIsPostGoodsOpen(true)}
+            openQuickUploadModal={() => setIsQuickUploadOpen(true)}
           />
         ) : (
           <TradeDirectory
