@@ -18,6 +18,7 @@ import AuthModal from './components/Modals/AuthModal';
 import SearchResultsModal from './components/Modals/SearchResultsModal';
 import ContactModal from './components/Modals/ContactModal';
 import QuickUploadModal from './components/Modals/QuickUploadModal';
+import SafetyWarningModal from './components/Modals/SafetyWarningModal';
 import AdminPanel from './components/Admin/AdminPanel';
 import AdminPasswordModal from './components/Modals/AdminPasswordModal';
 import CartDrawer from './components/CartDrawer';
@@ -132,6 +133,7 @@ export default function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [isQuickUploadOpen, setIsQuickUploadOpen] = useState(false);
+  const [isSafetyModalOpen, setIsSafetyModalOpen] = useState(true);
 
   // Global window handler for Admin Prompt
   useEffect(() => {
@@ -574,6 +576,11 @@ export default function App() {
         onClose={() => setIsQuickUploadOpen(false)}
         openPostGoodsModal={() => setIsPostGoodsOpen(true)}
         openRegisterTradeModal={() => setIsRegisterTradeOpen(true)}
+      />
+
+      <SafetyWarningModal
+        isOpen={isSafetyModalOpen}
+        onClose={() => setIsSafetyModalOpen(false)}
       />
 
       {/* Floating Mobile Bottom Dock */}

@@ -96,52 +96,7 @@ export default function Hero({
 
           </div>
 
-          {/* Anti-Scam & Fraud Alert Warning Banner */}
-          <div className="max-w-4xl mx-auto rounded-3xl p-4 sm:p-5 bg-gradient-to-r from-rose-950/80 via-amber-950/70 to-slate-900/90 border-2 border-rose-500/60 shadow-2xl shadow-rose-900/40 text-left relative overflow-hidden backdrop-blur-xl animate-fade-in">
-            {/* Flashing Warning Glow Background */}
-            <div className="absolute -top-12 -right-12 w-40 h-40 bg-rose-500/20 rounded-full blur-2xl pointer-events-none animate-pulse" />
-            
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 relative z-10">
-              {/* Animated Flashing Warning Icon Badge */}
-              <div className="p-3 sm:p-3.5 rounded-2xl bg-rose-500/20 text-rose-400 border border-rose-500/50 shadow-lg shadow-rose-500/30 shrink-0 flex items-center justify-center animate-bounce" style={{ animationDuration: '2.5s' }}>
-                <AlertTriangle className="w-7 h-7 text-amber-300 animate-pulse" />
-              </div>
 
-              <div className="flex-1 space-y-1">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-rose-500/30 text-rose-300 border border-rose-400/40 text-[11px] font-extrabold tracking-wide uppercase animate-pulse">
-                    <ShieldAlert className="w-3.5 h-3.5 text-rose-400" />
-                    Safety &amp; Anti-Fraud Warning
-                  </span>
-                  <span className="text-[11px] text-amber-300/90 font-semibold">Important Notice for All Buyers &amp; Sellers</span>
-                </div>
-
-                <h3 className="text-base sm:text-lg font-black text-white leading-tight">
-                  We <span className="text-gradient from-rose-400 via-amber-300 to-rose-400 uppercase tracking-wide">do NOT accept or encourage online payments</span> on our website.
-                </h3>
-
-                <p className="text-xs sm:text-sm text-gray-300 leading-relaxed font-medium">
-                  Vekyd has <strong className="text-amber-300 font-bold">NO option or gateway to process payments through our website</strong>. Never send advance money, online UPI transfers, or bank deposits to anyone claiming to represent Vekyd. Always inspect items &amp; meet craftsmen in person before making any payment.
-                </p>
-              </div>
-            </div>
-
-            {/* Anti-Fraud Protection Tips Bar */}
-            <div className="mt-3.5 pt-3 border-t border-rose-500/20 grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px] text-gray-300 font-medium">
-              <div className="flex items-center gap-1.5 bg-black/30 px-2.5 py-1.5 rounded-xl border border-rose-500/20">
-                <Lock className="w-3.5 h-3.5 text-rose-400 shrink-0" />
-                <span>No Advance Online Payments</span>
-              </div>
-              <div className="flex items-center gap-1.5 bg-black/30 px-2.5 py-1.5 rounded-xl border border-amber-500/20">
-                <ShieldCheck className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                <span>Meet &amp; Inspect Goods In Person</span>
-              </div>
-              <div className="flex items-center gap-1.5 bg-black/30 px-2.5 py-1.5 rounded-xl border border-cyan-500/20">
-                <AlertTriangle className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
-                <span>Report Fraudulent Listings</span>
-              </div>
-            </div>
-          </div>
 
         </div>
       </div>
