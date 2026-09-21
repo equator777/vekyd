@@ -82,13 +82,6 @@ export default function Hero({
               <span>Register Trade</span>
             </button>
 
-            <button
-              onClick={openQuickUploadModal}
-              className="btn bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-cyan-500/40 px-4 sm:px-5 py-2.5 sm:py-3 text-xs sm:text-sm font-bold shadow-lg flex-1 sm:flex-none justify-center"
-            >
-              <Upload className="w-4 h-4 text-cyan-400" />
-              <span>📷 Upload Photo (Phone/PC)</span>
-            </button>
           </div>
 
           {/* Ticker Stats */}

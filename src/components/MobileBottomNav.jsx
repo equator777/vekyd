@@ -59,14 +59,6 @@ export default function MobileBottomNav({
           <span className="text-[10px]">Sell</span>
         </button>
 
-        {/* Upload Photo CTA */}
-        <button
-          onClick={openQuickUploadModal}
-          className="flex flex-col items-center gap-1 py-1.5 px-2 min-w-[54px] rounded-2xl text-cyan-300 bg-cyan-500/15 border border-cyan-500/30 font-bold hover:bg-cyan-500/25 transition-all"
-        >
-          <Upload className="w-5 h-5 text-cyan-400 animate-pulse" />
-          <span className="text-[10px]">Photo</span>
-        </button>
 
         {/* Register Pro CTA */}
         <button

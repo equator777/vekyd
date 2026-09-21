@@ -105,25 +105,13 @@ export default function GoodsMarketplace({
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
-            {openQuickUploadModal && (
-              <button
-                onClick={openQuickUploadModal}
-                className="btn bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 hover:bg-cyan-500/30 text-xs font-bold flex-1 sm:flex-initial px-4 py-2.5 shadow-lg shadow-cyan-500/10"
-                title="Upload Photo from Phone or PC"
-              >
-                <Upload className="w-4 h-4 text-cyan-400" />
-                <span>📷 Upload Image</span>
-              </button>
-            )}
-            <button
-              onClick={openPostGoodsModal}
-              className="btn btn-warm text-xs font-bold flex-1 sm:flex-initial px-4 py-2.5 shadow-lg shadow-rose-500/20"
-            >
-              <PlusCircle className="w-4 h-4" />
-              <span>List Product for Sale</span>
-            </button>
-          </div>
+          <button
+            onClick={openPostGoodsModal}
+            className="btn btn-warm text-xs font-bold w-full sm:w-auto self-start md:self-auto px-4 py-2.5 shadow-lg shadow-rose-500/20"
+          >
+            <PlusCircle className="w-4 h-4" />
+            <span>List Product for Sale</span>
+          </button>
         </div>
 
         {/* Filter Controls Bar */}

@@ -119,15 +119,6 @@ export default function Navbar({
             </button>
           )}
 
-          {/* Quick Photo Upload Button (Phone / PC) */}
-          <button
-            onClick={openQuickUploadModal}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-extrabold bg-gradient-to-r from-cyan-500/25 to-indigo-500/25 text-cyan-300 border border-cyan-400/40 hover:border-cyan-400 transition-all shadow-md"
-            title="Upload photo from Phone camera/gallery or PC disk"
-          >
-            <Upload className="w-4 h-4 text-cyan-400" />
-            <span className="hidden sm:inline">Upload Photo</span>
-          </button>
 
           {/* Post Used Item */}
           <button
