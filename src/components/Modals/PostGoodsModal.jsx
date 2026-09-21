@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { X, Plus, Sparkles, AlertCircle, Building2, Clock, CheckCircle2 } from 'lucide-react';
+import ImageUploader from '../Common/ImageUploader';
 
 export default function PostGoodsModal({
   isOpen,
@@ -76,8 +77,8 @@ export default function PostGoodsModal({
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
-      <div className="glass-card w-full max-w-xl bg-slate-900 border border-white/15 rounded-3xl p-6 relative max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-md animate-fade-in">
+      <div className="glass-card w-full max-w-xl bg-slate-900 border border-white/15 rounded-t-3xl sm:rounded-3xl p-4 sm:p-6 relative max-h-[94dvh] sm:max-h-[90vh] overflow-y-auto">
         
         {/* Close Button */}
         <button
@@ -214,34 +215,14 @@ export default function PostGoodsModal({
               </div>
             </div>
 
-            <div>
-              <label className="label">Image URL</label>
-              <input
-                type="url"
-                placeholder="https://images.unsplash.com/..."
-                value={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
-                className="input-field"
-              />
-              
-              {/* Image Preview Selector */}
-              <div className="mt-2">
-                <span className="text-[11px] text-gray-400 block mb-1">Or click a preset sample image:</span>
-                <div className="flex items-center gap-2">
-                  {sampleImages.map((src, i) => (
-                    <img
-                      key={i}
-                      src={src}
-                      alt="Preset"
-                      onClick={() => setImageUrl(src)}
-                      className={`w-12 h-12 rounded-lg object-cover cursor-pointer border-2 ${
-                        imageUrl === src ? 'border-indigo-400 scale-105' : 'border-white/10 hover:border-white/30'
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
+            {/* Product Image Uploader with Gallery/Camera support */}
+            <ImageUploader
+              value={imageUrl}
+              onChange={setImageUrl}
+              label="Product Photo *"
+              helpText="Upload photo from Phone/PC or paste web URL"
+              presetImages={sampleImages}
+            />
 
             <div>
               <label className="label">Description &amp; Details</label>
@@ -255,7 +236,7 @@ export default function PostGoodsModal({
             </div>
 
             {/* Action buttons */}
-            <div className="pt-4 flex items-center justify-end gap-3 border-t border-white/10">
+            <div className="pt-4 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-3 border-t border-white/10">
               <button type="button" onClick={onClose} className="btn btn-secondary text-xs">
                 Cancel
               </button>

@@ -17,12 +17,14 @@ import QuoteModal from './components/Modals/QuoteModal';
 import AuthModal from './components/Modals/AuthModal';
 import SearchResultsModal from './components/Modals/SearchResultsModal';
 import ContactModal from './components/Modals/ContactModal';
+import QuickUploadModal from './components/Modals/QuickUploadModal';
 import AdminPanel from './components/Admin/AdminPanel';
 import AdminPasswordModal from './components/Modals/AdminPasswordModal';
 import CartDrawer from './components/CartDrawer';
 import { trackVisitor } from './utils/visitorTracker';
 
 import { INITIAL_GOODS, INITIAL_TRADESMEN, INITIAL_USERS, INITIAL_ADS, TRADE_CATEGORIES } from './data/initialData';
+import { triggerAutoGitHubSync } from './utils/githubSync';
 import { Sparkles } from 'lucide-react';
 
 const sanitizeCurrency = (data) => {
@@ -129,6 +131,7 @@ export default function App() {
   const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+  const [isQuickUploadOpen, setIsQuickUploadOpen] = useState(false);
 
   // Global window handler for Admin Prompt
   useEffect(() => {
@@ -172,20 +175,47 @@ export default function App() {
     setTimeout(() => setToastMessage(null), 3000);
   };
 
+  // Helper for Instant Live GitHub Sync & Netlify Deployment
+  const syncLiveToGitHub = (updatedUsers = users, updatedGoods = goods, updatedTradesmen = tradesmen, updatedAds = ads, updatedCategories = tradeCategories, msg) => {
+    triggerAutoGitHubSync({
+      users: updatedUsers,
+      goods: updatedGoods,
+      tradesmen: updatedTradesmen,
+      ads: updatedAds,
+      tradeCategories: updatedCategories,
+      commitMessage: msg,
+      onSyncStart: () => {
+        showToast('⚡ Live Auto-Push: Committing updates to GitHub...');
+      },
+      onSyncSuccess: () => {
+        showToast('✓ Live Site Updated on GitHub! Netlify is auto-deploying (~30s)');
+      },
+      onSyncError: (err) => {
+        console.error('GitHub auto-sync error:', err);
+      }
+    });
+  };
+
   // User & Admin Handlers
   const handleAddUser = (newUser) => {
-    setUsers(prev => [newUser, ...prev]);
+    const updatedUsers = [newUser, ...users];
+    setUsers(updatedUsers);
     showToast(`✓ User "${newUser.name}" added to system!`);
+    syncLiveToGitHub(updatedUsers, goods, tradesmen, ads, tradeCategories, `admin: add user ${newUser.name}`);
   };
 
   const handleDeleteUser = (userId) => {
-    setUsers(prev => prev.filter(u => u.id !== userId));
+    const updatedUsers = users.filter(u => u.id !== userId);
+    setUsers(updatedUsers);
     showToast('User account deleted');
+    syncLiveToGitHub(updatedUsers, goods, tradesmen, ads, tradeCategories, `admin: delete user ${userId}`);
   };
 
   const handleToggleBusinessTier = (userId) => {
-    setUsers(prev => prev.map(u => {
+    let targetUserName = '';
+    const updatedUsers = users.map(u => {
       if (u.id === userId) {
+        targetUserName = u.name;
         const isNowBusiness = u.userType !== 'business';
         return {
           ...u,
@@ -195,28 +225,36 @@ export default function App() {
         };
       }
       return u;
-    }));
+    });
+    setUsers(updatedUsers);
     showToast('✓ Updated user membership tier!');
+    syncLiveToGitHub(updatedUsers, goods, tradesmen, ads, tradeCategories, `membership: toggle business tier for ${targetUserName}`);
   };
 
   // Goods Handlers
   const handleAddGoods = (newItem) => {
-    setGoods(prev => [newItem, ...prev]);
+    const updatedGoods = [newItem, ...goods];
+    setGoods(updatedGoods);
     showToast(`✓ Published listing "${newItem.title}" (Valid for 30 Days)!`);
+    syncLiveToGitHub(users, updatedGoods, tradesmen, ads, tradeCategories, `marketplace: new product listing "${newItem.title}"`);
   };
 
   const handleDeleteGoods = (goodsId) => {
-    setGoods(prev => prev.filter(g => g.id !== goodsId));
+    const updatedGoods = goods.filter(g => g.id !== goodsId);
+    setGoods(updatedGoods);
     showToast('Product listing removed');
+    syncLiveToGitHub(users, updatedGoods, tradesmen, ads, tradeCategories, `marketplace: delete item ${goodsId}`);
   };
 
   const handleUpdateGoods = (updatedItem) => {
-    setGoods(prev => prev.map(g => g.id === updatedItem.id ? updatedItem : g));
+    const updatedGoods = goods.map(g => g.id === updatedItem.id ? updatedItem : g);
+    setGoods(updatedGoods);
     showToast(`✓ Updated listing "${updatedItem.title}"!`);
+    syncLiveToGitHub(users, updatedGoods, tradesmen, ads, tradeCategories, `marketplace: update item "${updatedItem.title}"`);
   };
 
   const handleRenewGoodsExpiry = (goodsId) => {
-    setGoods(prev => prev.map(g => {
+    const updatedGoods = goods.map(g => {
       if (g.id === goodsId) {
         return {
           ...g,
@@ -224,8 +262,10 @@ export default function App() {
         };
       }
       return g;
-    }));
+    });
+    setGoods(updatedGoods);
     showToast('✓ Renewed 30-day listing validity!');
+    syncLiveToGitHub(users, updatedGoods, tradesmen, ads, tradeCategories, `marketplace: renew 30-day expiry for ${goodsId}`);
   };
 
   const handleToggleFavorite = (itemId) => {
@@ -248,13 +288,17 @@ export default function App() {
   };
 
   const handleAddAd = (newAd) => {
-    setAds(prev => [newAd, ...prev]);
+    const updatedAds = [newAd, ...ads];
+    setAds(updatedAds);
     showToast('✓ Published new sponsored business banner!');
+    syncLiveToGitHub(users, goods, tradesmen, updatedAds, tradeCategories, `ads: add sponsor banner "${newAd.sponsorName}"`);
   };
 
   const handleDeleteAd = (adId) => {
-    setAds(prev => prev.filter(a => a.id !== adId));
+    const updatedAds = ads.filter(a => a.id !== adId);
+    setAds(updatedAds);
     showToast('Ad banner removed');
+    syncLiveToGitHub(users, goods, tradesmen, updatedAds, tradeCategories, `ads: delete banner ${adId}`);
   };
 
   // Cart Handlers
@@ -286,15 +330,17 @@ export default function App() {
 
   // Tradesmen Handlers
   const handleRegisterTrade = (newPro) => {
-    setTradesmen(prev => [newPro, ...prev]);
+    const updatedTradesmen = [newPro, ...tradesmen];
+    setTradesmen(updatedTradesmen);
 
     const catName = newPro.tradeCategory;
     const catId = catName.toLowerCase().replace(/\s+/g, '-');
 
+    let updatedCategories = tradeCategories;
     setTradeCategories(prev => {
       const exists = prev.some(c => c.id === catId || c.name.toLowerCase() === catName.toLowerCase());
       if (exists) return prev;
-      return [
+      updatedCategories = [
         ...prev,
         {
           id: catId,
@@ -305,22 +351,24 @@ export default function App() {
           description: `Specialized ${catName} contracting services`
         }
       ];
+      return updatedCategories;
     });
 
     setActiveTab('trades');
     setSelectedTrade(catId);
     showToast(`✓ Welcome ${newPro.name}! Profile registered under ${catName}.`);
+    syncLiveToGitHub(users, goods, updatedTradesmen, ads, updatedCategories, `tradesmen: register craftsman profile "${newPro.name}" (${catName})`);
   };
 
   // Count active goods posted by current user for 1-item limit check
   const currentUserActiveGoodsCount = user ? goods.filter(g => g.sellerId === user.id).length : 0;
 
   return (
-    <div className="min-h-screen flex flex-col relative bg-slate-950 text-white selection:bg-indigo-500 selection:text-white pb-20 md:pb-0">
+    <div className="min-h-screen flex flex-col relative bg-slate-950 text-white selection:bg-indigo-500 selection:text-white pb-24 md:pb-0">
       
       {/* Toast Notification Floating */}
       {toastMessage && (
-        <div className="fixed top-20 right-6 z-50 px-4 py-3 rounded-2xl bg-indigo-600 text-white font-bold text-xs shadow-2xl border border-indigo-400/40 flex items-center gap-2 animate-fade-in backdrop-blur-md">
+        <div className="fixed top-3 left-4 right-4 sm:top-20 sm:left-auto sm:right-6 sm:max-w-sm z-50 px-4 py-3 rounded-2xl bg-indigo-600 text-white font-bold text-xs shadow-2xl border border-indigo-400/40 flex items-center gap-2 animate-fade-in backdrop-blur-md">
           <Sparkles className="w-4 h-4 text-cyan-300 animate-spin" style={{ animationDuration: '4s' }} />
           <span>{toastMessage}</span>
         </div>
@@ -337,6 +385,7 @@ export default function App() {
         openRegisterTradeModal={() => setIsRegisterTradeOpen(true)}
         openAuthModal={() => setIsAuthModalOpen(true)}
         openAdminModal={() => setIsAdminModalOpen(true)}
+        openQuickUploadModal={() => setIsQuickUploadOpen(true)}
         user={user}
         theme={theme}
         toggleTheme={toggleTheme}
@@ -350,6 +399,7 @@ export default function App() {
         setActiveTab={setActiveTab}
         openPostGoodsModal={() => setIsPostGoodsOpen(true)}
         openRegisterTradeModal={() => setIsRegisterTradeOpen(true)}
+        openQuickUploadModal={() => setIsQuickUploadOpen(true)}
       />
 
       {/* Monetized Sponsored Business Ad Banner */}
@@ -447,6 +497,15 @@ export default function App() {
         tradeCategories={tradeCategories}
         onLogin={(u) => {
           setUser(u);
+          setUsers(prev => {
+            const exists = prev.some(existing => existing.id === u.id);
+            if (!exists) {
+              const updatedUsers = [u, ...prev];
+              syncLiveToGitHub(updatedUsers, goods, tradesmen, ads, tradeCategories, `auth: register new user "${u.name}" (${u.userType})`);
+              return updatedUsers;
+            }
+            return prev;
+          });
           showToast(`Logged in as ${u.name}`);
         }}
         onLogout={() => {
@@ -509,6 +568,13 @@ export default function App() {
         showToast={showToast}
       />
 
+      <QuickUploadModal
+        isOpen={isQuickUploadOpen}
+        onClose={() => setIsQuickUploadOpen(false)}
+        openPostGoodsModal={() => setIsPostGoodsOpen(true)}
+        openRegisterTradeModal={() => setIsRegisterTradeOpen(true)}
+      />
+
       {/* Floating Mobile Bottom Dock */}
       <MobileBottomNav
         activeTab={activeTab}
@@ -524,6 +590,7 @@ export default function App() {
           }
         }}
         openRegisterTradeModal={() => setIsRegisterTradeOpen(true)}
+        openQuickUploadModal={() => setIsQuickUploadOpen(true)}
         openAuthModal={() => setIsAuthModalOpen(true)}
         user={user}
       />

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { X, User, Lock, Mail, ShieldCheck, Building2, CheckCircle2, IndianRupee, Sparkles } from 'lucide-react';
 import { TRADE_CATEGORIES } from '../../data/initialData';
+import ImageUploader from '../Common/ImageUploader';
+import { handleImageError, DEFAULT_AVATAR_FALLBACK } from '../../utils/imageUtils';
 
 export default function AuthModal({ isOpen, onClose, user, onLogin, onLogout, tradeCategories }) {
   const [isRegister, setIsRegister] = useState(false);
@@ -10,6 +12,7 @@ export default function AuthModal({ isOpen, onClose, user, onLogin, onLogout, tr
   const [password, setPassword] = useState('');
   const [tradeCategory, setTradeCategory] = useState('welder');
   const [businessName, setBusinessName] = useState('');
+  const [avatarUrl, setAvatarUrl] = useState('');
 
   if (!isOpen) return null;
 
@@ -38,7 +41,7 @@ export default function AuthModal({ isOpen, onClose, user, onLogin, onLogout, tr
         : 'General Seller (1 Item Max)',
       businessName: accountType === 'business' ? (businessName || name) : null,
       subscriptionExpiresAt: accountType === 'business' ? now + thirtyDays : null,
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
+      avatar: avatarUrl || DEFAULT_AVATAR_FALLBACK,
       registeredDate: new Date().toISOString().split('T')[0]
     };
 
@@ -61,7 +64,12 @@ export default function AuthModal({ isOpen, onClose, user, onLogin, onLogout, tr
         {user ? (
           /* User Profile View */
           <div className="text-center py-4">
-            <img src={user.avatar} alt={user.name} className="w-20 h-20 rounded-full mx-auto object-cover border-2 border-indigo-400 mb-3 shadow-lg" />
+            <img
+              src={user.avatar}
+              alt={user.name}
+              onError={(e) => handleImageError(e, DEFAULT_AVATAR_FALLBACK)}
+              className="w-20 h-20 rounded-full mx-auto object-cover border-2 border-indigo-400 mb-3 shadow-lg"
+            />
             <h3 className="text-xl font-extrabold text-white">{user.name}</h3>
             <span className={`inline-block text-xs font-extrabold px-3 py-1 rounded-full mb-2 ${
               user.userType === 'business'
@@ -207,6 +215,16 @@ export default function AuthModal({ isOpen, onClose, user, onLogin, onLogout, tr
                     ))}
                   </select>
                 </div>
+              )}
+
+              {isRegister && (
+                <ImageUploader
+                  value={avatarUrl}
+                  onChange={setAvatarUrl}
+                  label={accountType === 'business' ? "Business Shop Logo / Photo" : "Profile Avatar Photo"}
+                  helpText="Upload from phone gallery, camera, or PC"
+                  fallbackType={DEFAULT_AVATAR_FALLBACK}
+                />
               )}
 
               <div>

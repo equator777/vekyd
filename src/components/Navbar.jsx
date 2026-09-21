@@ -16,6 +16,7 @@ import {
   Building2,
   X
 } from 'lucide-react';
+import { handleImageError, DEFAULT_AVATAR_FALLBACK } from '../utils/imageUtils';
 
 export default function Navbar({
   activeTab,
@@ -27,6 +28,7 @@ export default function Navbar({
   openRegisterTradeModal,
   openAuthModal,
   openAdminModal,
+  openQuickUploadModal,
   user,
   theme,
   toggleTheme,
@@ -35,10 +37,10 @@ export default function Navbar({
 }) {
   return (
     <header className="sticky top-0 z-40 w-full backdrop-blur-xl bg-opacity-80 border-b border-white/10" style={{ background: 'var(--bg-secondary)' }}>
-      <div className="container mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-4">
+      <div className="container mx-auto px-4 py-2.5 sm:py-3 flex flex-wrap items-center justify-between gap-3 sm:gap-4">
         
         {/* Brand Logo */}
-        <div className="flex items-center gap-3 cursor-pointer" onClick={() => setActiveTab('goods')}>
+        <button type="button" className="flex items-center gap-2.5 sm:gap-3 cursor-pointer text-left" onClick={() => setActiveTab('goods')} aria-label="Go to marketplace">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-cyan-400 p-0.5 shadow-lg shadow-indigo-500/30 flex items-center justify-center animate-glow">
             <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
               <Hammer className="w-5 h-5 text-cyan-400" />
@@ -46,16 +48,16 @@ export default function Navbar({
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="font-extrabold text-2xl tracking-tight text-gradient">Vekyd</span>
-              <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-400 border border-rose-500/30 uppercase tracking-wider">
+              <span className="font-extrabold text-xl sm:text-2xl tracking-tight text-gradient">Vekyd</span>
+              <span className="hidden sm:inline text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-400 border border-rose-500/30 uppercase tracking-wider">
                 Market
               </span>
             </div>
           </div>
-        </div>
+        </button>
 
         {/* Tab Selector Buttons */}
-        <div className="flex items-center gap-1 bg-black/30 p-1 rounded-full border border-white/10">
+        <div className="hidden md:flex items-center gap-1 bg-black/30 p-1 rounded-full border border-white/10">
           <button
             onClick={() => setActiveTab('goods')}
             className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 ${
@@ -102,7 +104,7 @@ export default function Navbar({
         </div>
 
         {/* Actions & User Nav */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-0.5 sm:gap-2">
           
           {/* Admin Control Portal Trigger Button - ONLY VISIBLE WHEN LOGGED IN AS ADMIN */}
           {user && user.userType === 'admin' && (
@@ -115,6 +117,16 @@ export default function Navbar({
               <span className="hidden sm:inline">Admin Portal</span>
             </button>
           )}
+
+          {/* Quick Photo Upload Button (Phone / PC) */}
+          <button
+            onClick={openQuickUploadModal}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-extrabold bg-gradient-to-r from-cyan-500/25 to-indigo-500/25 text-cyan-300 border border-cyan-400/40 hover:border-cyan-400 transition-all shadow-md"
+            title="Upload photo from Phone camera/gallery or PC disk"
+          >
+            <Upload className="w-4 h-4 text-cyan-400" />
+            <span className="hidden sm:inline">Upload Photo</span>
+          </button>
 
           {/* Post Used Item */}
           <button
@@ -137,7 +149,7 @@ export default function Navbar({
           {/* Cart Icon */}
           <button
             onClick={() => setIsCartOpen(true)}
-            className="relative p-2 rounded-full hover:bg-white/10 text-gray-300 hover:text-white transition-colors"
+            className="relative hidden md:inline-flex p-2 rounded-full hover:bg-white/10 text-gray-300 hover:text-white transition-colors"
             title="Shopping Cart"
           >
             <ShoppingCart className="w-5 h-5" />
@@ -167,13 +179,18 @@ export default function Navbar({
                   : 'bg-white/10 text-white border-white/15 hover:bg-white/20'
               }`}
             >
-              <img src={user.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100'} alt={user.name} className="w-6 h-6 rounded-full object-cover" />
+              <img
+                src={user.avatar || DEFAULT_AVATAR_FALLBACK}
+                alt={user.name}
+                onError={(e) => handleImageError(e, DEFAULT_AVATAR_FALLBACK)}
+                className="w-6 h-6 rounded-full object-cover"
+              />
               <span className="hidden sm:inline max-w-[100px] truncate">{user.name}</span>
             </button>
           ) : (
             <button
               onClick={openAuthModal}
-              className="btn btn-primary px-4 py-1.5 text-xs font-bold"
+              className="btn btn-primary px-3 sm:px-4 py-2 sm:py-1.5 text-xs font-bold"
             >
               <User className="w-4 h-4" />
               <span>Sign In</span>

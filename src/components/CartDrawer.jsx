@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { X, ShoppingBag, Trash2, Plus, Minus, CheckCircle2, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
+import { handleImageError, DEFAULT_PRODUCT_FALLBACK } from '../utils/imageUtils';
 import confetti from 'canvas-confetti';
 
 export default function CartDrawer({
@@ -48,7 +49,7 @@ export default function CartDrawer({
   return (
     <div className="fixed inset-0 z-50 overflow-hidden bg-black/70 backdrop-blur-sm animate-fade-in flex justify-end">
       
-      <div className="w-full max-w-md bg-slate-900 border-l border-white/10 h-full flex flex-col justify-between shadow-2xl relative">
+      <div className="w-full sm:max-w-md bg-slate-900 border-l border-white/10 h-full flex flex-col justify-between shadow-2xl relative">
         
         {/* Top Header */}
         <div className="p-4 border-b border-white/10 flex items-center justify-between">
@@ -92,7 +93,12 @@ export default function CartDrawer({
                 key={item.id}
                 className="p-3 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-3 relative group"
               >
-                <img src={item.image} alt={item.title} className="w-16 h-16 rounded-xl object-cover border border-white/10 shrink-0" />
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  onError={(e) => handleImageError(e, DEFAULT_PRODUCT_FALLBACK)}
+                  className="w-16 h-16 rounded-xl object-cover border border-white/10 shrink-0"
+                />
                 
                 <div className="flex-1 min-w-0">
                   <h4 className="text-xs font-bold text-white truncate">{item.title}</h4>

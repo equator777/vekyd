@@ -31,6 +31,8 @@ import {
 } from 'lucide-react';
 import { commitDataToGitHub } from '../../utils/githubSync';
 import { GOODS_CATEGORIES } from '../../data/initialData';
+import ImageUploader from '../Common/ImageUploader';
+import { handleImageError, DEFAULT_AVATAR_FALLBACK, DEFAULT_PRODUCT_FALLBACK, DEFAULT_AD_FALLBACK } from '../../utils/imageUtils';
 
 export default function AdminPanel({
   isOpen,
@@ -52,23 +54,28 @@ export default function AdminPanel({
   const [activeTab, setActiveTab] = useState('users'); // 'users' | 'listings' | 'ads' | 'analytics' | 'github'
   const [userSearch, setUserSearch] = useState('');
   
-  // GitHub Settings State (persisted in localStorage)
   const [ghOwner, setGhOwner] = useState(() => {
     const savedOwner = localStorage.getItem('vekyd_gh_owner');
     return !savedOwner || savedOwner === 'vekyd-org' ? 'equator777' : savedOwner;
   });
   const [ghRepo, setGhRepo] = useState(() => localStorage.getItem('vekyd_gh_repo') || 'vekyd');
   const [ghToken, setGhToken] = useState(() => localStorage.getItem('vekyd_gh_token') || '');
-  
+  const [autoPush, setAutoPush] = useState(() => localStorage.getItem('vekyd_gh_auto_push') !== 'false');
+
   const [isDeploying, setIsDeploying] = useState(false);
   const [deployStatus, setDeployStatus] = useState(null);
 
-  // Save GitHub credentials to local storage
+  // Sync repository configuration and auto push settings to localStorage
   useEffect(() => {
     localStorage.setItem('vekyd_gh_owner', ghOwner);
     localStorage.setItem('vekyd_gh_repo', ghRepo);
-    localStorage.setItem('vekyd_gh_token', ghToken);
-  }, [ghOwner, ghRepo, ghToken]);
+    localStorage.setItem('vekyd_gh_auto_push', autoPush ? 'true' : 'false');
+    if (ghToken) {
+      localStorage.setItem('vekyd_gh_token', ghToken);
+    } else {
+      localStorage.removeItem('vekyd_gh_token');
+    }
+  }, [ghOwner, ghRepo, ghToken, autoPush]);
 
   // New User Form State
   const [isAddUserOpen, setIsAddUserOpen] = useState(false);
@@ -443,7 +450,31 @@ export default function AdminPanel({
                     onChange={(e) => setGhToken(e.target.value)}
                     className="input-field text-xs bg-slate-900 border-amber-500/40 text-amber-200"
                   />
+                  <p className="mt-1.5 text-[10px] text-gray-500">Saved in browser for automatic background pushes when users post or register.</p>
                 </div>
+              </div>
+
+              {/* Instant Auto-Sync Switch */}
+              <div className="p-4 rounded-xl bg-slate-900/80 border border-indigo-500/30 mb-4 flex items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-indigo-500/20 text-indigo-400">
+                    <Sparkles className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-bold text-white">Instant Auto-Push on Registration &amp; Postings</h4>
+                    <p className="text-[11px] text-gray-400">Automatically push to GitHub whenever someone registers, signs up as craftsman/labor, posts items, or upgrades to ₹500/mo business membership.</p>
+                  </div>
+                </div>
+
+                <label className="relative inline-flex items-center cursor-pointer shrink-0">
+                  <input
+                    type="checkbox"
+                    checked={autoPush}
+                    onChange={(e) => setAutoPush(e.target.checked)}
+                    className="sr-only peer"
+                  />
+                  <div className="w-11 h-6 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                </label>
               </div>
 
               {/* Status Banner */}
@@ -582,7 +613,12 @@ export default function AdminPanel({
                     <tr key={u.id} className="hover:bg-white/5 transition-colors">
                       <td className="p-3">
                         <div className="flex items-center gap-3">
-                          <img src={u.avatar} alt={u.name} className="w-8 h-8 rounded-full object-cover" />
+                          <img
+                            src={u.avatar}
+                            alt={u.name}
+                            onError={(e) => handleImageError(e, DEFAULT_AVATAR_FALLBACK)}
+                            className="w-8 h-8 rounded-full object-cover"
+                          />
                           <div>
                             <span className="font-bold text-white block">{u.name}</span>
                             <span className="text-[11px] text-gray-400 block">{u.email}</span>
@@ -730,16 +766,13 @@ export default function AdminPanel({
                   </div>
                 </div>
 
-                <div>
-                  <label className="label text-xs">Image URL (Optional)</label>
-                  <input
-                    type="url"
-                    placeholder="https://images.unsplash.com/..."
-                    value={prodImage}
-                    onChange={(e) => setProdImage(e.target.value)}
-                    className="input-field text-xs"
-                  />
-                </div>
+                <ImageUploader
+                  value={prodImage}
+                  onChange={setProdImage}
+                  label="Product Photo"
+                  helpText="Upload from phone gallery, camera, or PC"
+                  fallbackType={DEFAULT_PRODUCT_FALLBACK}
+                />
 
                 <div>
                   <label className="label text-xs">Description &amp; Location</label>
@@ -781,7 +814,12 @@ export default function AdminPanel({
                         <tr className="hover:bg-white/5 transition-colors">
                           <td className="p-3">
                             <div className="flex items-center gap-3">
-                              <img src={item.image} alt={item.title} className="w-10 h-10 rounded-xl object-cover" />
+                              <img
+                                src={item.image}
+                                alt={item.title}
+                                onError={(e) => handleImageError(e, DEFAULT_PRODUCT_FALLBACK)}
+                                className="w-10 h-10 rounded-xl object-cover"
+                              />
                               <div className="max-w-xs">
                                 <span className="font-bold text-white block truncate">{item.title}</span>
                                 <span className="text-[10px] text-indigo-400 uppercase font-semibold">{item.category}</span>
@@ -975,15 +1013,13 @@ export default function AdminPanel({
                     className="input-field text-xs"
                   />
                 </div>
-                <div>
-                  <input
-                    type="url"
-                    placeholder="Banner Image URL"
-                    value={adImage}
-                    onChange={(e) => setAdImage(e.target.value)}
-                    className="input-field text-xs"
-                  />
-                </div>
+                <ImageUploader
+                  value={adImage}
+                  onChange={setAdImage}
+                  label="Banner Image"
+                  helpText="Upload banner from phone/PC or paste URL"
+                  fallbackType={DEFAULT_AD_FALLBACK}
+                />
                 <div className="flex justify-end gap-2">
                   <button type="button" onClick={() => setIsAddAdOpen(false)} className="btn btn-secondary text-xs py-1.5">Cancel</button>
                   <button type="submit" className="btn btn-warm text-xs py-1.5 font-bold">Publish Business Ad</button>
@@ -995,7 +1031,12 @@ export default function AdminPanel({
               {ads.map((ad) => (
                 <div key={ad.id} className="p-4 rounded-2xl bg-slate-950 border border-white/10 flex flex-col justify-between">
                   <div>
-                    <img src={ad.image} alt={ad.title} className="w-full h-32 object-cover rounded-xl mb-3" />
+                    <img
+                      src={ad.image}
+                      alt={ad.title}
+                      onError={(e) => handleImageError(e, DEFAULT_AD_FALLBACK)}
+                      className="w-full h-32 object-cover rounded-xl mb-3"
+                    />
                     <span className="badge badge-amber text-[10px] mb-2">{ad.sponsorName}</span>
                     <h4 className="text-sm font-bold text-white mb-1">{ad.title}</h4>
                     <p className="text-xs text-gray-400 mb-3">{ad.subtitle}</p>

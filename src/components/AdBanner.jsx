@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Sparkles, ShieldCheck, ExternalLink, IndianRupee, Tag, TrendingUp } from 'lucide-react';
+import { handleImageError, DEFAULT_AD_FALLBACK } from '../utils/imageUtils';
 
 export default function AdBanner({ ads, onAdClick, openRegisterBusiness }) {
   const [activeAdIndex, setActiveAdIndex] = useState(0);
@@ -20,6 +21,7 @@ export default function AdBanner({ ads, onAdClick, openRegisterBusiness }) {
             <img
               src={currentAd.image}
               alt={currentAd.title}
+              onError={(e) => handleImageError(e, DEFAULT_AD_FALLBACK)}
               className="w-full h-full object-cover opacity-25 group-hover:scale-105 transition-transform duration-700"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/80 to-transparent" />

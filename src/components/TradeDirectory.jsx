@@ -19,6 +19,7 @@ import {
   Hammer
 } from 'lucide-react';
 import { TRADE_CATEGORIES } from '../data/initialData';
+import { handleImageError, DEFAULT_AVATAR_FALLBACK, DEFAULT_PRODUCT_FALLBACK } from '../utils/imageUtils';
 
 export default function TradeDirectory({
   tradesmen,
@@ -169,6 +170,7 @@ export default function TradeDirectory({
                         <img
                           src={pro.avatar}
                           alt={pro.name}
+                          onError={(e) => handleImageError(e, DEFAULT_AVATAR_FALLBACK)}
                           className="w-14 h-14 rounded-2xl object-cover border-2 border-cyan-400/40 shadow-md"
                         />
                         {pro.availableNow && (
@@ -247,6 +249,7 @@ export default function TradeDirectory({
                           key={i}
                           src={imgUrl}
                           alt="Portfolio item"
+                          onError={(e) => handleImageError(e, DEFAULT_PRODUCT_FALLBACK)}
                           className="w-16 h-12 rounded-lg object-cover border border-white/10"
                         />
                       ))}

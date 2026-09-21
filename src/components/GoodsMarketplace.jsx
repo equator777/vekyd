@@ -15,6 +15,7 @@ import {
   AlertTriangle
 } from 'lucide-react';
 import { GOODS_CATEGORIES } from '../data/initialData';
+import { handleImageError, DEFAULT_PRODUCT_FALLBACK, DEFAULT_AVATAR_FALLBACK } from '../utils/imageUtils';
 
 export default function GoodsMarketplace({
   goods,
@@ -87,14 +88,14 @@ export default function GoodsMarketplace({
   };
 
   return (
-    <div className="py-8">
+    <div className="py-5 sm:py-8">
       <div className="container mx-auto px-4">
         
         {/* Marketplace Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
           <div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white flex items-center gap-2.5">
-              <ShoppingBag className="w-7 h-7 text-indigo-400" />
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white flex items-start sm:items-center gap-2.5">
+              <ShoppingBag className="w-6 h-6 sm:w-7 sm:h-7 text-indigo-400 shrink-0 mt-1 sm:mt-0" />
               <span>Products, Groceries &amp; <span className="text-gradient">Goods Marketplace</span></span>
             </h2>
             <p className="text-xs sm:text-sm text-gray-400 mt-1">
@@ -104,7 +105,7 @@ export default function GoodsMarketplace({
 
           <button
             onClick={openPostGoodsModal}
-            className="btn btn-warm text-xs font-bold self-start md:self-auto px-4 py-2.5 shadow-lg shadow-rose-500/20"
+            className="btn btn-warm text-xs font-bold w-full sm:w-auto self-start md:self-auto px-4 py-2.5 shadow-lg shadow-rose-500/20"
           >
             <PlusCircle className="w-4 h-4" />
             <span>List Product for Sale</span>
@@ -112,10 +113,10 @@ export default function GoodsMarketplace({
         </div>
 
         {/* Filter Controls Bar */}
-        <div className="glass-card p-4 mb-8 bg-slate-900/60 border border-white/10 rounded-2xl">
+        <div className="glass-card p-3 sm:p-4 mb-6 sm:mb-8 bg-slate-900/60 border border-white/10 rounded-2xl">
           
           {/* Category Tabs */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-4 scrollbar-none border-b border-white/10">
+          <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-3 sm:mb-4 scrollbar-none border-b border-white/10 -mx-3 px-3 sm:mx-0 sm:px-0">
             {GOODS_CATEGORIES.map((cat) => (
               <button
                 key={cat.id}
@@ -132,7 +133,7 @@ export default function GoodsMarketplace({
           </div>
 
           {/* Sub-Filters: Condition, Price Slider & Sort */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
+          <div className="grid grid-cols-1 min-[520px]:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 items-end">
             
             {/* Condition Filter */}
             <div>
@@ -183,7 +184,7 @@ export default function GoodsMarketplace({
             </div>
 
             {/* Reset Button */}
-            <div className="flex items-end h-full">
+            <div className="flex items-end h-full min-[520px]:col-span-2 lg:col-span-1">
               <button
                 onClick={resetFilters}
                 className="btn btn-secondary w-full py-2 text-xs font-bold flex items-center justify-center gap-1.5"
@@ -205,7 +206,7 @@ export default function GoodsMarketplace({
 
         {/* Item Cards Grid */}
         {filteredGoods.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 min-[520px]:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
             {filteredGoods.map((item) => {
               const isFav = favorites.includes(item.id);
               const discount = item.originalPrice 
@@ -227,6 +228,7 @@ export default function GoodsMarketplace({
                     <img
                       src={item.image}
                       alt={item.title}
+                      onError={(e) => handleImageError(e, DEFAULT_PRODUCT_FALLBACK)}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     
@@ -267,9 +269,9 @@ export default function GoodsMarketplace({
                   <div className="p-4 flex-1 flex flex-col justify-between">
                     <div>
                       {/* Category & Location */}
-                      <div className="flex items-center justify-between text-[11px] text-gray-400 mb-2">
+                      <div className="flex items-center justify-between gap-2 text-[11px] text-gray-400 mb-2">
                         <span className="uppercase font-bold tracking-wider text-indigo-400">{item.category}</span>
-                        <span className="flex items-center gap-1">
+                        <span className="flex items-center gap-1 min-w-0 truncate">
                           <MapPin className="w-3 h-3 text-rose-400" />
                           {item.location}
                         </span>
@@ -290,7 +292,12 @@ export default function GoodsMarketplace({
                           : 'bg-white/5 border-white/5'
                       }`}>
                         <div className="flex items-center gap-2">
-                          <img src={item.sellerAvatar} alt={item.sellerName} className="w-5 h-5 rounded-full object-cover" />
+                          <img
+                            src={item.sellerAvatar}
+                            alt={item.sellerName}
+                            onError={(e) => handleImageError(e, DEFAULT_AVATAR_FALLBACK)}
+                            className="w-5 h-5 rounded-full object-cover"
+                          />
                           <div className="flex-1 truncate">
                             <span className="text-[11px] font-semibold text-white block truncate">{item.sellerName}</span>
                             
@@ -343,16 +350,14 @@ export default function GoodsMarketplace({
                         </button>
                       </div>
                     </div>
-
                   </div>
-
                 </div>
               );
             })}
           </div>
         ) : (
           /* Empty State */
-          <div className="glass-card p-12 text-center max-w-lg mx-auto rounded-3xl border border-white/10">
+          <div className="glass-card p-6 sm:p-12 text-center max-w-lg mx-auto rounded-3xl border border-white/10">
             <div className="w-16 h-16 rounded-full bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center mx-auto mb-4 text-indigo-400">
               <ShoppingBag className="w-8 h-8" />
             </div>
@@ -360,7 +365,7 @@ export default function GoodsMarketplace({
             <p className="text-xs text-gray-400 mb-6">
               No products match your search criteria. Try resetting your search filters or posting your product!
             </p>
-            <div className="flex items-center justify-center gap-3">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3">
               <button onClick={resetFilters} className="btn btn-secondary text-xs font-bold">
                 Reset Filters
               </button>

@@ -24,8 +24,8 @@ export default function ItemDetailModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
-      <div className="glass-card w-full max-w-3xl bg-slate-900 border border-white/15 rounded-3xl p-6 relative max-h-[92vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-md animate-fade-in">
+      <div className="glass-card w-full max-w-3xl bg-slate-900 border border-white/15 rounded-t-3xl sm:rounded-3xl p-4 sm:p-6 relative max-h-[94dvh] sm:max-h-[92vh] overflow-y-auto">
         
         {/* Close Button */}
         <button
@@ -35,12 +35,17 @@ export default function ItemDetailModal({
           <X className="w-5 h-5" />
         </button>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           
           {/* Left Column: Image */}
           <div>
             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-slate-950 border border-white/10 mb-3">
-              <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+              <img 
+                src={item.image} 
+                alt={item.title} 
+                onError={(e) => handleImageError(e, DEFAULT_PRODUCT_FALLBACK)}
+                className="w-full h-full object-cover" 
+              />
               
               <div className="absolute top-3 left-3">
                 <span className="badge badge-rose text-xs shadow-lg">{item.condition}</span>
@@ -102,7 +107,12 @@ export default function ItemDetailModal({
               {/* Seller Pill */}
               <div className="p-3 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between gap-3 mb-4">
                 <div className="flex items-center gap-3">
-                  <img src={item.sellerAvatar} alt={item.sellerName} className="w-10 h-10 rounded-full object-cover border border-white/10" />
+                  <img
+                    src={item.sellerAvatar}
+                    alt={item.sellerName}
+                    onError={(e) => handleImageError(e, DEFAULT_AVATAR_FALLBACK)}
+                    className="w-10 h-10 rounded-full object-cover border border-white/10"
+                  />
                   <div>
                     <span className="text-xs font-bold text-white block">{item.sellerName}</span>
                     <span className="text-[11px] text-cyan-400 font-semibold">{item.sellerRole}</span>
@@ -130,7 +140,7 @@ export default function ItemDetailModal({
             <div className="space-y-3 pt-3 border-t border-white/10">
               
               {/* Make an Offer input */}
-              <form onSubmit={handleMakeOffer} className="flex items-center gap-2">
+              <form onSubmit={handleMakeOffer} className="flex flex-col min-[430px]:flex-row items-stretch min-[430px]:items-center gap-2">
                 <input
                   type="number"
                   placeholder="Negotiate offer price (₹)..."

@@ -71,6 +71,10 @@ html {
   color: var(--text-primary);
 }
 
+html, body, #root {
+  min-width: 320px;
+}
+
 body {
   min-height: 100vh;
   overflow-x: hidden;
@@ -154,6 +158,16 @@ h1, h2, h3, h4, h5, h6 {
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   font-family: var(--font-heading);
+}
+
+@media (max-width: 767px) {
+  .glass-card:hover {
+    transform: none;
+  }
+
+  .btn {
+    min-height: 2.75rem;
+  }
 }
 
 .btn-primary {
@@ -321,4 +335,3 @@ optgroup {
   color: #0f172a !important;
   color-scheme: light;
 }
-

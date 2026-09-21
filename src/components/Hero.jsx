@@ -11,17 +11,19 @@ import {
   ArrowRight,
   Flame,
   PlusCircle,
-  UserCheck
+  UserCheck,
+  Upload
 } from 'lucide-react';
 
 export default function Hero({
   activeTab,
   setActiveTab,
   openPostGoodsModal,
-  openRegisterTradeModal
+  openRegisterTradeModal,
+  openQuickUploadModal
 }) {
   return (
-    <div className="relative overflow-hidden pt-8 pb-12 bg-gradient-to-b from-slate-950 via-slate-900 to-transparent border-b border-white/5">
+    <div className="relative overflow-hidden pt-6 sm:pt-8 pb-8 sm:pb-12 bg-gradient-to-b from-slate-950 via-slate-900 to-transparent border-b border-white/5">
       
       {/* Dynamic Glowing Background Spheres */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-gradient-to-r from-indigo-600/20 via-purple-600/20 to-cyan-500/20 blur-[100px] rounded-full pointer-events-none" />
@@ -30,9 +32,9 @@ export default function Hero({
         <div className="text-center max-w-3xl mx-auto">
           
           {/* Badge pill */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-semibold text-cyan-300 mb-5 shadow-inner">
+          <div className="inline-flex max-w-full items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-[11px] sm:text-xs font-semibold text-cyan-300 mb-5 shadow-inner">
             <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-spin" style={{ animationDuration: '8s' }} />
-            <span>Dynamic Marketplace &amp; Skilled Craftsmen Hub</span>
+            <span className="truncate">Dynamic Marketplace &amp; Skilled Craftsmen Hub</span>
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
           </div>
 
@@ -79,11 +81,19 @@ export default function Hero({
               <UserCheck className="w-4 h-4" />
               <span>Register Trade</span>
             </button>
+
+            <button
+              onClick={openQuickUploadModal}
+              className="btn bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-cyan-500/40 px-4 sm:px-5 py-2.5 sm:py-3 text-xs sm:text-sm font-bold shadow-lg flex-1 sm:flex-none justify-center"
+            >
+              <Upload className="w-4 h-4 text-cyan-400" />
+              <span>📷 Upload Photo (Phone/PC)</span>
+            </button>
           </div>
 
           {/* Ticker Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md max-w-4xl mx-auto text-left">
-            <div className="p-3 border-r border-white/10 last:border-none">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 p-2 sm:p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md max-w-4xl mx-auto text-left">
+            <div className="p-2 sm:p-3 border-r border-white/10">
               <div className="flex items-center gap-2 text-indigo-400 font-bold text-lg">
                 <Zap className="w-5 h-5 text-amber-400" />
                 <span>2,400+</span>
@@ -91,7 +101,7 @@ export default function Hero({
               <p className="text-xs text-gray-400 font-medium">Used Goods Listed</p>
             </div>
             
-            <div className="p-3 border-r border-white/10 last:border-none">
+            <div className="p-2 sm:p-3 md:border-r border-white/10">
               <div className="flex items-center gap-2 text-cyan-400 font-bold text-lg">
                 <Hammer className="w-5 h-5 text-cyan-400" />
                 <span>850+</span>
@@ -99,7 +109,7 @@ export default function Hero({
               <p className="text-xs text-gray-400 font-medium">Registered Tradesmen</p>
             </div>
 
-            <div className="p-3 border-r border-white/10 last:border-none">
+            <div className="p-2 sm:p-3 border-r border-white/10">
               <div className="flex items-center gap-2 text-rose-400 font-bold text-lg">
                 <ShieldCheck className="w-5 h-5 text-emerald-400" />
                 <span>100%</span>
@@ -107,7 +117,7 @@ export default function Hero({
               <p className="text-xs text-gray-400 font-medium">Verified Profiles</p>
             </div>
 
-            <div className="p-3">
+            <div className="p-2 sm:p-3">
               <div className="flex items-center gap-2 text-emerald-400 font-bold text-lg">
                 <Globe2 className="w-5 h-5 text-indigo-400" />
                 <span>Free Host</span>

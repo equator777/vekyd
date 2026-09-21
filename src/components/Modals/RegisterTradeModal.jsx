@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { X, UserCheck, Wrench, Sparkles, ShieldCheck, Hammer } from 'lucide-react';
 import { TRADE_CATEGORIES } from '../../data/initialData';
+import ImageUploader from '../Common/ImageUploader';
+import { DEFAULT_AVATAR_FALLBACK } from '../../utils/imageUtils';
 
 export default function RegisterTradeModal({ isOpen, onClose, onRegisterTrade, tradeCategories }) {
   const [name, setName] = useState('');
@@ -39,7 +41,7 @@ export default function RegisterTradeModal({ isOpen, onClose, onRegisterTrade, t
       rating: 5.0,
       reviewCount: 1,
       verificationStatus: 'Verified Pro',
-      avatar: avatarUrl || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200',
+      avatar: avatarUrl || DEFAULT_AVATAR_FALLBACK,
       bio: bio || 'Professional skilled trade specialist ready for quality contracts and jobs.',
       skills: skills ? skills.split(',').map(s => s.trim()) : ['Quality Workmanship', 'Licensed Specialist'],
       portfolio: [
@@ -62,11 +64,12 @@ export default function RegisterTradeModal({ isOpen, onClose, onRegisterTrade, t
     setExperienceYears('');
     setBio('');
     setSkills('');
+    setAvatarUrl('');
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-fade-in">
-      <div className="glass-card w-full max-w-2xl bg-slate-900 border border-white/15 rounded-3xl p-6 relative max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/70 backdrop-blur-md animate-fade-in">
+      <div className="glass-card w-full max-w-2xl bg-slate-900 border border-white/15 rounded-t-3xl sm:rounded-3xl p-4 sm:p-6 relative max-h-[94dvh] sm:max-h-[90vh] overflow-y-auto">
         
         {/* Close Button */}
         <button
@@ -232,19 +235,17 @@ export default function RegisterTradeModal({ isOpen, onClose, onRegisterTrade, t
             />
           </div>
 
-          <div>
-            <label className="label">Avatar Image URL (Optional)</label>
-            <input
-              type="url"
-              placeholder="https://images.unsplash.com/..."
-              value={avatarUrl}
-              onChange={(e) => setAvatarUrl(e.target.value)}
-              className="input-field"
-            />
-          </div>
+          {/* Craftsman Profile Photo Uploader */}
+          <ImageUploader
+            value={avatarUrl}
+            onChange={setAvatarUrl}
+            label="Craftsman Profile Photo / Avatar"
+            helpText="Upload profile photo from Phone/PC gallery"
+            fallbackType={DEFAULT_AVATAR_FALLBACK}
+          />
 
           {/* Submit Action */}
-          <div className="pt-4 flex items-center justify-end gap-3 border-t border-white/10">
+          <div className="pt-4 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-3 border-t border-white/10">
             <button type="button" onClick={onClose} className="btn btn-secondary text-xs">
               Cancel
             </button>

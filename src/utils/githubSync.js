@@ -68,3 +68,74 @@ export async function commitDataToGitHub({
   const result = await putRes.json();
   return result;
 }
+
+let syncTimeout = null;
+
+/**
+ * Auto-triggers GitHub deployment commit if GitHub credentials exist in localStorage or ENV.
+ * Call this whenever users, listings, tradesmen, or ads are mutated.
+ */
+export async function triggerAutoGitHubSync({
+  users,
+  goods,
+  tradesmen,
+  ads,
+  tradeCategories,
+  commitMessage,
+  onSyncStart,
+  onSyncSuccess,
+  onSyncError
+}) {
+  const owner = localStorage.getItem('vekyd_gh_owner') || 'equator777';
+  const repo = localStorage.getItem('vekyd_gh_repo') || 'vekyd';
+  const token = localStorage.getItem('vekyd_gh_token') || import.meta.env.VITE_GITHUB_TOKEN || '';
+  const autoPushEnabled = localStorage.getItem('vekyd_gh_auto_push') !== 'false';
+
+  // If no token or auto push disabled, exit cleanly
+  if (!token || !autoPushEnabled) {
+    console.log('[GitHub Auto-Sync] Auto push skipped (No access token configured in Admin Panel or ENV)');
+    return false;
+  }
+
+  // Clear existing debounce timer
+  if (syncTimeout) {
+    clearTimeout(syncTimeout);
+  }
+
+  return new Promise((resolve) => {
+    syncTimeout = setTimeout(async () => {
+      try {
+        if (onSyncStart) onSyncStart();
+
+        const fullSiteData = {
+          updatedAt: new Date().toISOString(),
+          ...(tradeCategories ? { TRADE_CATEGORIES: tradeCategories } : {}),
+          users: users || [],
+          goods: goods || [],
+          tradesmen: tradesmen || [],
+          ads: ads || []
+        };
+
+        const msg = commitMessage || `live-sync: auto update marketplace content (${new Date().toLocaleTimeString()})`;
+
+        const res = await commitDataToGitHub({
+          owner,
+          repo,
+          token,
+          filePath: 'src/data/initialData.json',
+          data: fullSiteData,
+          commitMessage: msg
+        });
+
+        console.log('[GitHub Auto-Sync] Successfully committed to GitHub:', res);
+        if (onSyncSuccess) onSyncSuccess(res);
+        resolve(true);
+      } catch (err) {
+        console.error('[GitHub Auto-Sync] Failed to commit to GitHub:', err);
+        if (onSyncError) onSyncError(err);
+        resolve(false);
+      }
+    }, 1500); // 1.5s debounce to consolidate rapid edits
+  });
+}
+
