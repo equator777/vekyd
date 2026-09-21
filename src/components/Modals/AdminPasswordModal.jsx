@@ -9,8 +9,8 @@ export default function AdminPasswordModal({ isOpen, onClose, onAdminSuccess }) 
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Default Admin Password: admin123 or vekyd2026
-    if (password === 'admin123' || password === 'vekyd2026' || password === 'admin') {
+    // Admin Master Password: D#l@2012%10
+    if (password === 'D#l@2012%10') {
       setErrorMsg('');
       setPassword('');
       onAdminSuccess();
@@ -57,7 +57,6 @@ export default function AdminPasswordModal({ isOpen, onClose, onAdminSuccess }) 
               }}
               className="input-field border-amber-500/40 text-amber-200"
             />
-            <span className="text-[10px] text-gray-400 block mt-1">Default Password: <code className="text-amber-300 font-mono">admin123</code></span>
           </div>
 
           {errorMsg && (
